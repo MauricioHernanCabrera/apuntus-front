@@ -1,0 +1,26 @@
+{
+  "name": "apuntus-frontend",
+  "version": "1.0.0",
+  "description": "My slick Nuxt.js project",
+  "author": "Mauricio Hernan Cabrera",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server.js --watch server.js",
+    "build": "nuxt build",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/pwa": "^3.0.0-0",
+    "cookie-universal-nuxt": "^2.0.17",
+    "cross-env": "^5.2.0",
+    "express": "^4.17.1",
+    "nuxt": "^2.0.0",
+    "vuelidate": "^0.7.4"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.0.0",
+    "nodemon": "^1.19.1"
+  }
+}
