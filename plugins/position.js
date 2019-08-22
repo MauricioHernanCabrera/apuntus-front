@@ -1,13 +1,8 @@
 const returnPosition = () => {
-  console.log(`w=${window.innerWidth}`);
-  console.log(`h=${window.innerHeight}`);
   const obj = {
     x: Math.round(window.pageXOffset),
-    y: Math.round(window.pageYOffset),
-    width: window.innerWidth,
-    height: window.innerHeight
+    y: Math.round(window.pageYOffset)
   };
-  console.log(JSON.stringify(obj));
   return obj;
 };
 

@@ -10,7 +10,11 @@ export default {
   methods: {
     ...mapActions('notification', ['handleError', 'setNotification']),
 
-    async sendRequest(callbackTry, callbackCatch = null, callbackFinally = null) {
+    async sendRequest(
+      callbackTry,
+      callbackCatch = null,
+      callbackFinally = null
+    ) {
       if (this.$nuxt.isOffline) {
         return this.setNotification({
           message: '¡Necesitas internet para realizar esta acción!',
@@ -28,6 +32,7 @@ export default {
             this.setNotification({ message: res.message });
           }
         } catch (error) {
+          console.log(error);
           this.handleError(error);
           if (callbackCatch) {
             await callbackCatch();

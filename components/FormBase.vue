@@ -6,59 +6,61 @@
     persistent
     ref="formBase"
   >
-    <v-card text>
-      <v-form @submit.prevent="$emit('submit-form')">
-        <v-toolbar dark color="primary" v-if="fullscreen" class="elevation-0">
-          <v-btn icon dark @click="$emit('cancel-form')">
-            <v-icon>close</v-icon>
-          </v-btn>
+    <v-slide-x-transition>
+      <v-card text v-if="active">
+        <v-form @submit.prevent="$emit('submit-form')">
+          <v-toolbar dark color="primary" v-if="fullscreen" class="elevation-0">
+            <v-btn icon dark @click="$emit('cancel-form')">
+              <v-icon>close</v-icon>
+            </v-btn>
 
-          <v-toolbar-title class="ml-0">{{ title }}</v-toolbar-title>
-        </v-toolbar>
-        <v-card-title v-else>
-          <span class="headline text-truncate">{{ title }}</span>
-        </v-card-title>
+            <v-toolbar-title class="ml-0">{{ title }}</v-toolbar-title>
+          </v-toolbar>
+          <v-card-title v-else>
+            <span class="headline text-truncate">{{ title }}</span>
+          </v-card-title>
 
-        <v-container>
-          <slot />
-        </v-container>
-
-        <v-footer v-if="fullscreen" height="56px" app>
-          <v-container fill-height class="pa-0">
-            <v-layout align-center>
-              <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
-
-              <v-spacer />
-
-              <v-btn
-                :disabled="disabled"
-                depressed
-                :loading="loading"
-                type="submit"
-                color="primary"
-              >
-                {{ nameBtnSubmit }}
-                <span slot="loader" class="custom-loader">
-                  <v-icon light>cached</v-icon>
-                </span>
-              </v-btn>
-            </v-layout>
+          <v-container>
+            <slot />
           </v-container>
-        </v-footer>
 
-        <v-card-actions v-else>
-          <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
-          <v-spacer></v-spacer>
+          <v-footer v-if="fullscreen" height="56px" app>
+            <v-container fill-height class="pa-0">
+              <v-layout align-center>
+                <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
 
-          <v-btn :disabled="disabled" depressed type="submit" color="primary" :loading="loading">
-            {{ nameBtnSubmit }}
-            <span slot="loader" class="custom-loader">
-              <v-icon light>cached</v-icon>
-            </span>
-          </v-btn>
-        </v-card-actions>
-      </v-form>
-    </v-card>
+                <v-spacer />
+
+                <v-btn
+                  :disabled="disabled"
+                  depressed
+                  :loading="loading"
+                  type="submit"
+                  color="primary"
+                >
+                  {{ nameBtnSubmit }}
+                  <span slot="loader" class="custom-loader">
+                    <v-icon light>cached</v-icon>
+                  </span>
+                </v-btn>
+              </v-layout>
+            </v-container>
+          </v-footer>
+
+          <v-card-actions v-else>
+            <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
+            <v-spacer></v-spacer>
+
+            <v-btn :disabled="disabled" depressed type="submit" color="primary" :loading="loading">
+              {{ nameBtnSubmit }}
+              <span slot="loader" class="custom-loader">
+                <v-icon light>cached</v-icon>
+              </span>
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-slide-x-transition>
   </v-dialog>
 </template>
 
@@ -80,14 +82,12 @@ export default {
   computed: {
     bindDialog() {
       const obj = {};
-      console.log(this.fullscreen);
       if (!this.fullscreen) {
         obj["max-width"] = "400px";
       } else {
         obj.fullscreen = true;
       }
       obj.value = this.active;
-      console.log(obj);
       return obj;
     }
   }

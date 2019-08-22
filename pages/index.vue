@@ -11,11 +11,13 @@
             solo-inverted
             color="primary"
             flat
+            v-model="filters.search"
             @blur="searchActive = false"
             hide-details
             label="Search"
             append-icon="search"
-            @click:append
+            @click:append="searchNotes"
+            @keyup.enter="searchNotes"
           ></v-text-field>
         </v-slide-x-transition>
 
@@ -29,7 +31,7 @@
           icon
           @click="setDialog({
           title: 'Filtros',
-          data: {},
+          data: filters,
           nameBtnSubmit: 'Aplicar filtros',
           active: 'filter-notes'
         })"
@@ -37,14 +39,6 @@
           <v-icon>mdi-filter-outline</v-icon>
         </v-btn>
       </core-toolbar>
-
-      <!-- <v-expand-transition>
-        <v-flex xs12 v-if="filterActive" mb-5>
-          <v-card flat color="transparent">
-            <v-card-text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni officiis nobis sequi obcaecati ut laborum eveniet corrupti, veritatis modi amet quam voluptatem dignissimos dolore, perspiciatis culpa ullam quaerat optio ex?</v-card-text>
-          </v-card>
-        </v-flex>
-      </v-expand-transition>-->
 
       <v-flex xs12>
         <notes :notes="notes" :loading="loading" />
@@ -74,18 +68,18 @@ export default {
 
   async asyncData({ store }) {
     let notes = [];
-    let page = null;
+    let filters = {};
     try {
       const resNotes = await store.dispatch("notes/getAll");
       notes = resNotes.data.array;
-      page = resNotes.data.nextPage;
+      filters.page = resNotes.data.nextPage;
     } catch (error) {
       console.log(error);
       store.dispatch("notification/handleError", error);
     } finally {
       return {
         notes,
-        page
+        filters
       };
     }
   },
@@ -93,7 +87,9 @@ export default {
   data() {
     return {
       searchActive: false,
-      filterActive: false
+      filterActive: false,
+
+      filters: {}
     };
   },
 
@@ -104,14 +100,39 @@ export default {
   methods: {
     ...mapActions("notes", ["getAll"]),
 
-    filterNotes() {
-      console.log("Filtrar");
+    filterNotes(filters) {
+      this.filters = {
+        ...this.filters,
+        ...filters,
+        page: 0,
+        search: ""
+      };
+      this.sendRequest(async () => {
+        const {
+          data: { array = [], nextPage = null },
+          message
+        } = await this.getAll({ queryParams: this.filters });
+        this.notes = array;
+        this.filters.page = nextPage;
+      });
+    },
+
+    searchNotes() {
+      this.filters.page = 0;
+      this.sendRequest(async () => {
+        const {
+          data: { array = [], nextPage = null },
+          message
+        } = await this.getAll({ queryParams: this.filters });
+        this.notes = array;
+        this.filters.page = nextPage;
+      });
     }
   },
 
   watch: {
     async "position.y"(newValue) {
-      if (!this.page) return;
+      if (!this.filters.page) return;
       const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
 
       if (!(fullHeight >= document.body.clientHeight)) return;
@@ -119,9 +140,9 @@ export default {
         const {
           data: { array = [], nextPage = null },
           message
-        } = await this.getAll({ queryParams: { page: this.page } });
+        } = await this.getAll({ queryParams: this.filters });
         this.notes = this.notes.concat(array);
-        this.page = nextPage;
+        this.filters.page = nextPage;
       });
     }
   }

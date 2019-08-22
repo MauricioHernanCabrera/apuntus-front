@@ -3,9 +3,19 @@ const basePath = 'notes';
 export const actions = {
   getAll({}, payload = {}) {
     const { queryParams = {} } = payload;
-    const { page } = queryParams;
-    const query = `?page=${page}`;
-    return this.$axios.$get(`/${basePath}/${query}`);
+
+    let queryArray = [];
+    for (let q in queryParams) {
+      if (queryParams[q]) {
+        const cadena = String(queryParams[q]);
+        if (cadena.length > 0) {
+          queryArray.push(`${q}=${cadena}&`);
+        }
+      }
+    }
+    const query = queryArray.join('').slice(0, -1);
+    console.log(query);
+    return this.$axios.$get(`/${basePath}?${query}`);
   },
 
   getOne({}, payload = {}) {

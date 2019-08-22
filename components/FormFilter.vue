@@ -9,7 +9,7 @@
     @submit-form="submitForm"
     @cancel-form="$emit('cancel-form')"
   >
-    <v-layout v-if="active" mx-0>
+    <v-layout mx-0>
       <v-flex xs12>
         <v-autocomplete
           v-model="form.institution"
@@ -37,6 +37,9 @@
             item-value="_id"
             placeholder="Algoritmo y Estructuras de Datos I"
             :items="subjects"
+            :readonly="!!form.subject"
+            :append-icon="form.subject? 'mdi-close' : 'mdi-menu-down'"
+            @click:append="form.subject = null"
           ></v-autocomplete>
         </v-expand-transition>
 
@@ -48,6 +51,9 @@
           item-text="name"
           item-value="_id"
           :items="codeNotes"
+          :readonly="!!form.codeNote"
+          :append-icon="form.codeNote? 'mdi-close' : 'mdi-menu-down'"
+          @click:append="form.codeNote = null"
         ></v-autocomplete>
 
         <v-autocomplete
@@ -58,6 +64,9 @@
           item-text="name"
           item-value="_id"
           :items="codeYears"
+          :readonly="!!form.codeYear"
+          :append-icon="form.codeYear? 'mdi-close' : 'mdi-menu-down'"
+          @click:append="form.codeYear = null"
         ></v-autocomplete>
       </v-flex>
     </v-layout>
@@ -73,75 +82,11 @@ import { mapActions } from "vuex";
 export default {
   mixins: [baseForm],
   validations: {
-    form: {
-      name: { required }
-    }
+    form: {}
   },
 
   data() {
     return {
-      states: [
-        "Alabama",
-        "Alaska",
-        "American Samoa",
-        "Arizona",
-        "Arkansas",
-        "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "District of Columbia",
-        "Federated States of Micronesia",
-        "Florida",
-        "Georgia",
-        "Guam",
-        "Hawaii",
-        "Idaho",
-        "Illinois",
-        "Indiana",
-        "Iowa",
-        "Kansas",
-        "Kentucky",
-        "Louisiana",
-        "Maine",
-        "Marshall Islands",
-        "Maryland",
-        "Massachusetts",
-        "Michigan",
-        "Minnesota",
-        "Mississippi",
-        "Missouri",
-        "Montana",
-        "Nebraska",
-        "Nevada",
-        "New Hampshire",
-        "New Jersey",
-        "New Mexico",
-        "New York",
-        "North Carolina",
-        "North Dakota",
-        "Northern Mariana Islands",
-        "Ohio",
-        "Oklahoma",
-        "Oregon",
-        "Palau",
-        "Pennsylvania",
-        "Puerto Rico",
-        "Rhode Island",
-        "South Carolina",
-        "South Dakota",
-        "Tennessee",
-        "Texas",
-        "Utah",
-        "Vermont",
-        "Virgin Island",
-        "Virginia",
-        "Washington",
-        "West Virginia",
-        "Wisconsin",
-        "Wyoming"
-      ],
-
       codeNotes: [],
       codeYears: [],
       institutions: [],
@@ -180,7 +125,13 @@ export default {
       "codeYears/getAll",
       "codeNotes/getAll"
     ]),
-    filterAutocomplete
+
+    filterAutocomplete,
+
+    submitForm() {
+      this.$emit("submit-form", this.form);
+      this.$emit("cancel-form");
+    }
   }
 };
 </script>

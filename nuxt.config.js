@@ -126,22 +126,22 @@ module.exports = {
     theme: {
       themes: {
         light: {
-          primary: colors.default.blue.darken2,
-          accent: colors.default.grey.darken3,
-          secondary: colors.default.amber.darken3,
-          info: colors.default.teal.lighten1,
+          primary: colors.default.blue.base,
+          accent: colors.default.grey.base,
+          secondary: colors.default.amber.base,
+          info: colors.default.teal.base,
           warning: colors.default.amber.base,
-          error: colors.default.deepOrange.accent4,
-          success: colors.default.green.accent3
+          error: colors.default.deepOrange.base,
+          success: colors.default.green.base
         },
         dark: {
-          primary: colors.default.blue.darken2,
-          accent: colors.default.grey.darken3,
-          secondary: colors.default.amber.darken3,
-          info: colors.default.teal.lighten1,
+          primary: colors.default.blue.base,
+          accent: colors.default.grey.base,
+          secondary: colors.default.amber.base,
+          info: colors.default.teal.base,
           warning: colors.default.amber.base,
-          error: colors.default.deepOrange.accent4,
-          success: colors.default.green.accent3
+          error: colors.default.deepOrange.base,
+          success: colors.default.green.base
         }
       }
     }
