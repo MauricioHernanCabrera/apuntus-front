@@ -5,6 +5,10 @@
 
       <v-toolbar-title v-if="title.length > 0">{{ title }}</v-toolbar-title>
       <slot />
+
+      <template v-slot:extension v-if="$route.name === 'users-username'">
+        <slot name="extension-2"></slot>
+      </template>
     </v-app-bar>
 
     <v-navigation-drawer class="primary" v-model="drawer" app dark rounded>
@@ -39,12 +43,12 @@
         </v-list-item>
 
         <template v-if="isAuth">
-          <v-list-item to="/users/hola" color="white">
+          <v-list-item :to="`/users/${user.username}`" color="white">
             <v-list-item-avatar size="24" class="mr-5">
               <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
             </v-list-item-avatar>
 
-            <v-list-item-title class="ml-3">Hola</v-list-item-title>
+            <v-list-item-title class="ml-3">{{ user.username }}</v-list-item-title>
           </v-list-item>
         </template>
       </v-list>
@@ -63,7 +67,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   props: {
@@ -108,7 +112,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters("user", ["isAuth"])
+    ...mapGetters("user", ["isAuth"]),
+    ...mapState("user", ["user"])
   }
 };
 </script>

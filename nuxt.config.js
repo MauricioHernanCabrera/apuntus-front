@@ -131,7 +131,7 @@ module.exports = {
           secondary: colors.default.amber.base,
           info: colors.default.teal.base,
           warning: colors.default.amber.base,
-          error: colors.default.deepOrange.base,
+          error: colors.default.red.base,
           success: colors.default.green.base
         },
         dark: {
@@ -140,7 +140,7 @@ module.exports = {
           secondary: colors.default.amber.base,
           info: colors.default.teal.base,
           warning: colors.default.amber.base,
-          error: colors.default.deepOrange.base,
+          error: colors.default.red.base,
           success: colors.default.green.base
         }
       }

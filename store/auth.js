@@ -4,7 +4,8 @@ export const actions = {
   async verifyToken({ commit }, { token }) {
     try {
       const resUser = await this.$axios.$get(`/${basePath}/verify`);
-      commit('user/SET_USER', { token }, { root: true });
+      // commit('user/SET_USER', { token }, { root: true });
+      this.$axios.setHeader('Authorization', `bearer ${token}`);
       console.log(resUser.message);
     } catch (error) {
       this.$cookies.remove('token');
@@ -20,7 +21,7 @@ export const actions = {
     };
     const res = await this.$axios.$get(`/${basePath}/token`, config);
 
-    commit('user/SET_USER', { token: res.data.token }, { root: true });
+    // commit('user/SET_USER', { token: res.data.token }, { root: true });
 
     const myDate = new Date();
     const sevenDays = new Date(myDate.setDate(myDate.getDate() + 7));
