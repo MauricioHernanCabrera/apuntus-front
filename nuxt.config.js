@@ -72,15 +72,16 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/styles.css'],
+  css: ['~/assets/styles.css', 'animate.css'],
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
     '~/plugins/vue-components',
     '~/plugins/vuelidate',
-    '~/plugins/auth'
+    '~/plugins/auth',
     // { src: '~/plugins/ga', ssr: false }
+    { src: '~/plugins/position', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules

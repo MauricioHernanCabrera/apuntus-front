@@ -1,12 +1,10 @@
 <template>
   <v-dialog
     @input="$emit('cancel-form')"
-    :value="active"
+    v-bind="bindDialog"
     transition="dialog-bottom-transition"
     persistent
     ref="formBase"
-    :max-width="fullscreen ? '100%' : '400px'"
-    :fullscreen="fullscreen"
   >
     <v-card text>
       <v-form @submit.prevent="$emit('submit-form')">
@@ -28,7 +26,7 @@
         <v-footer v-if="fullscreen" height="56px" app>
           <v-container fill-height class="pa-0">
             <v-layout align-center>
-              <v-btn text @click="$emit('cancel-form')">Close</v-btn>
+              <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
 
               <v-spacer />
 
@@ -49,7 +47,7 @@
         </v-footer>
 
         <v-card-actions v-else>
-          <v-btn text @click="$emit('cancel-form')">Close</v-btn>
+          <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
           <v-spacer></v-spacer>
 
           <v-btn :disabled="disabled" depressed type="submit" color="primary" :loading="loading">
@@ -76,6 +74,21 @@ export default {
     fullscreen: {
       type: Boolean,
       required: true
+    }
+  },
+
+  computed: {
+    bindDialog() {
+      const obj = {};
+      console.log(this.fullscreen);
+      if (!this.fullscreen) {
+        obj["max-width"] = "400px";
+      } else {
+        obj.fullscreen = true;
+      }
+      obj.value = this.active;
+      console.log(obj);
+      return obj;
     }
   }
 };

@@ -4,6 +4,9 @@ import CoreToolbar from '~/components/CoreToolbar';
 import FormBase from '~/components/FormBase';
 import FormDelete from '~/components/FormDelete';
 import Logo from '~/components/Logo';
+import Notes from '~/components/Notes';
+import CardNote from '~/components/CardNote';
+import FormFilter from '~/components/FormFilter';
 // import Example from '~/components/Example';
 
 Vue.component('CoreApp', CoreApp);
@@ -11,4 +14,7 @@ Vue.component('CoreToolbar', CoreToolbar);
 Vue.component('FormBase', FormBase);
 Vue.component('FormDelete', FormDelete);
 Vue.component('Logo', Logo);
+Vue.component('Notes', Notes);
+Vue.component('CardNote', CardNote);
+Vue.component('FormFilter', FormFilter);
 // Vue.component('Example', Example);

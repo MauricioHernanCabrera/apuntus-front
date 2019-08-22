@@ -3,8 +3,7 @@
     <v-app-bar app color="primary" dark class="elevation-0">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-      <v-spacer />
+      <v-toolbar-title v-if="title.length > 0">{{ title }}</v-toolbar-title>
       <slot />
     </v-app-bar>
 
@@ -17,7 +16,7 @@
             </v-list-item-title>
             <v-list-item-subtitle
               class="text-center"
-            >Encontra los mejores apuntes compartidos por estudiantes</v-list-item-subtitle>
+            >Encontra los mejores apuntes compartido por estudiantes</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -40,7 +39,7 @@
         </v-list-item>
 
         <template v-if="isAuth">
-          <v-list-item to="/users/hola">
+          <v-list-item to="/users/hola" color="white">
             <v-list-item-avatar size="24" class="mr-5">
               <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
             </v-list-item-avatar>
@@ -70,7 +69,7 @@ export default {
   props: {
     title: {
       type: String,
-      required: true
+      default: ""
     },
     iconBackName: {
       type: String,
