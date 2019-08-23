@@ -22,6 +22,12 @@ export const actions = {
     return this.$axios.$post(`/${basePath}/`, body);
   },
 
+  createSubject({}, payload = {}) {
+    const { body, pathParams = {} } = payload;
+    const { _id } = pathParams;
+    return this.$axios.$post(`/${basePath}/${_id}/subjects`, body);
+  },
+
   deleteOne({}, payload = {}) {
     const { pathParams } = payload;
     return this.$axios.$delete(`/${basePath}/${pathParams._id}/`);

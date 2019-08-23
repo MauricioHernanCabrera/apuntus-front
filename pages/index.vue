@@ -31,11 +31,11 @@
         <v-btn
           icon
           @click="setDialog({
-          title: 'Filtros',
-          data: filters,
-          nameBtnSubmit: 'Aplicar filtros',
-          active: 'filter-notes'
-        })"
+            title: 'Filtros',
+            data: filters,
+            nameBtnSubmit: 'Aplicar filtros',
+            active: 'filter-notes'
+          })"
         >
           <v-icon>mdi-filter-outline</v-icon>
         </v-btn>

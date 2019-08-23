@@ -1,11 +1,252 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <core-toolbar title="Nuevo apunte"></core-toolbar>
-    </v-flex>
-  </v-layout>
+  <v-container grid-list-md>
+    <core-toolbar title="Nuevo apunte"></core-toolbar>
+    <v-layout row wrap mx-0>
+      <v-flex xs12>
+        <v-form>
+          <v-layout row wrap mx-0>
+            <v-flex xs12>
+              <v-text-field v-model="form.title" placeholder="Mi apunte" label="Titulo (*)"></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-textarea
+                v-model="form.description"
+                placeholder="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est aspernatur, quasi accusamus libero excepturi porro similique doloremque, assumenda consequuntur rerum ipsum architecto nulla, quo earum deleniti itaque eveniet delectus molestiae?"
+                label="Descripción"
+              ></v-textarea>
+            </v-flex>
+            <v-flex xs12 md6>
+              <v-autocomplete
+                v-model="form.institution"
+                label="Institución (*)"
+                autofocus
+                placeholder="UNNE"
+                :filter="(item, queryText) => filterAutocomplete(item, queryText, 'nameSort')"
+                :items="institutions"
+                :readonly="!!form.institution"
+                :append-icon="form.institution? 'mdi-close' : 'mdi-menu-down'"
+                item-text="name"
+                no-data-text="No hay institución para seleccionar"
+                item-value="_id"
+                @click:append="() => {
+                  form.institution = null
+                  form.subject = null
+                }"
+              >
+                <v-card
+                  slot="append-item"
+                  color="primary"
+                  style="cursor: pointer;"
+                  @click="setDialog({
+                    title: 'Nueva institución',
+                    data: {},
+                    nameBtnSubmit: 'Crear',
+                    active: 'create-institution'
+                  })"
+                >
+                  <v-card-text class="py-2">
+                    <span class="subheading d-inline-block">¿No encontraste tu institución?</span>
+                    <span
+                      class="subheading py-1 d-inline-block white--text"
+                    >¡Click aca para agregarla!</span>
+                  </v-card-text>
+                </v-card>
+              </v-autocomplete>
+            </v-flex>
+            <v-expand-transition>
+              <v-flex xs12 md6>
+                <v-autocomplete
+                  v-show="form.institution"
+                  v-model="form.subject"
+                  :filter="(item, queryText) => filterAutocomplete(item, queryText, 'nameSort')"
+                  label="Materia (*)"
+                  item-text="name"
+                  no-data-text="No hay materia para seleccionar"
+                  item-value="_id"
+                  placeholder="Algoritmo y Estructuras de Datos I"
+                  :items="subjects"
+                  :readonly="!!form.subject"
+                  :append-icon="form.subject? 'mdi-close' : 'mdi-menu-down'"
+                  @click:append="() => {
+                    form.subject = null
+                  }"
+                >
+                  <v-card
+                    slot="append-item"
+                    color="primary"
+                    style="cursor: pointer;"
+                    @click="setDialog({
+                      title: 'Nueva materia',
+                      data: {},
+                      nameBtnSubmit: 'Crear',
+                      active: 'create-subject'
+                    })"
+                  >
+                    <v-card-text class="py-2">
+                      <span class="subheading d-inline-block">¿No encontraste tu materia?</span>
+                      <span
+                        class="subheading py-1 d-inline-block white--text"
+                      >¡Click aca para agregarla!</span>
+                    </v-card-text>
+                  </v-card>
+                </v-autocomplete>
+              </v-flex>
+            </v-expand-transition>
+            <v-flex xs12 md6>
+              <v-autocomplete
+                v-model="form.codeNote"
+                label="Tipo de apunte (*)"
+                :filter="(item, queryText) => filterAutocomplete(item, queryText, 'name')"
+                placeholder="Practico"
+                item-text="name"
+                item-value="_id"
+                :items="codeNotes"
+                :readonly="!!form.codeNote"
+                :append-icon="form.codeNote? 'mdi-close' : 'mdi-menu-down'"
+                @click:append="form.codeNote = null"
+              ></v-autocomplete>
+            </v-flex>
+            <v-flex xs12 md6>
+              <v-autocomplete
+                v-model="form.codeYear"
+                label="Año academico (*)"
+                :filter="(item, queryText) => filterAutocomplete(item, queryText, 'name')"
+                placeholder="2018 / 2019"
+                item-text="name"
+                item-value="_id"
+                :items="codeYears"
+                :readonly="!!form.codeYear"
+                :append-icon="form.codeYear? 'mdi-close' : 'mdi-menu-down'"
+                @click:append="form.codeYear = null"
+              ></v-autocomplete>
+            </v-flex>
+          </v-layout>
+        </v-form>
+      </v-flex>
+    </v-layout>
+
+    <form-institution
+      :data="dialog.data"
+      :active="dialog.active == 'create-institution'"
+      :title="dialog.title"
+      :loading="loading"
+      :nameBtnSubmit="dialog.nameBtnSubmit"
+      @cancel-form="cancelDialog"
+      @submit-form="createInstitution"
+    />
+
+    <form-subject
+      :data="dialog.data"
+      :active="dialog.active == 'create-subject'"
+      :title="dialog.title"
+      :loading="loading"
+      :nameBtnSubmit="dialog.nameBtnSubmit"
+      @cancel-form="cancelDialog"
+      @submit-form="createSubject"
+    />
+  </v-container>
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+import { filterAutocomplete } from "@/helpers/removeAccent";
+import deleteAutocompleteInput from "@/mixins/deleteAutocompleteInput";
+import sendRequest from "@/mixins/sendRequest";
+import handleForm from "@/mixins/handleForm";
+
+export default {
+  mixins: [deleteAutocompleteInput, sendRequest, handleForm],
+
+  async asyncData({ store }) {
+    let institutions = [];
+    let codeYears = [];
+    let codeNotes = [];
+    try {
+      [
+        { data: institutions },
+        { data: codeYears },
+        { data: codeNotes }
+      ] = await Promise.all([
+        store.dispatch("institutions/getAll"),
+        store.dispatch("codeYears/getAll"),
+        store.dispatch("codeNotes/getAll")
+      ]);
+    } catch (error) {
+      store.dispatch("notification/handleError", error);
+    } finally {
+      return {
+        institutions,
+        codeYears,
+        codeNotes
+      };
+    }
+  },
+
+  data() {
+    return {
+      subjects: [],
+
+      form: {
+        title: "",
+        description: "",
+        instutition: "",
+        subject: "",
+        codeNote: "",
+        codeYear: ""
+      }
+    };
+  },
+
+  watch: {
+    async "form.institution"(newValue) {
+      if (!newValue) return;
+
+      const resSubjects = await this["institutions/getSubjects"]({
+        queryParams: {
+          _id: newValue
+        }
+      });
+
+      this.subjects = resSubjects.data;
+    }
+  },
+
+  methods: {
+    ...mapActions([
+      "institutions/getSubjects",
+      "institutions/createOne",
+      "institutions/createSubject"
+    ]),
+
+    filterAutocomplete,
+
+    createInstitution({ newValue: body }) {
+      console.log("createInstitution");
+
+      this.sendRequest(async () => {
+        const resInstitution = await this["institutions/createOne"]({
+          body
+        });
+        this.institutions.push(resInstitution.data);
+        this.form.institution = resInstitution.data._id;
+        return resInstitution;
+      });
+    },
+
+    createSubject({ newValue: body }) {
+      console.log("createSubject");
+      this.sendRequest(async () => {
+        const resSubject = await this["institutions/createSubject"]({
+          body,
+          pathParams: {
+            _id: this.form.institution
+          }
+        });
+        this.subjects.push(resSubject.data);
+        this.form.subject = resSubject.data._id;
+        return resSubject;
+      });
+    }
+  }
+};
 </script>

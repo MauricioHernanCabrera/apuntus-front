@@ -23,7 +23,10 @@
           item-text="name"
           no-data-text="No hay institución para seleccionar"
           item-value="_id"
-          @click:append="form.institution = null"
+          @click:append="() => {
+            form.institution = null
+            form.subject = null
+          }"
         ></v-autocomplete>
 
         <v-expand-transition>
@@ -58,7 +61,7 @@
 
         <v-autocomplete
           v-model="form.codeYear"
-          label="Año"
+          label="Año academico"
           :filter="(item, queryText) => filterAutocomplete(item, queryText, 'name')"
           placeholder="2018 / 2019"
           item-text="name"
