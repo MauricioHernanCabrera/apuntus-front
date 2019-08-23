@@ -18,15 +18,13 @@ export const actions = {
       console.log('>>> nuxtServerInit <<<');
 
       if (token) {
-        const [{ data }] = await Promise.all([
-          dispatch('user/me', { header: { token } }),
-          dispatch('auth/verifyToken', { token })
-        ]);
-        console.log(data);
+        await dispatch('auth/verifyToken', { token });
+        const { data } = await dispatch('user/me', {});
         commit('user/SET_USER', data);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      console.log('No se pudo loguear');
     }
   }
 };

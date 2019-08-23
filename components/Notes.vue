@@ -17,7 +17,7 @@
     <template v-else>
       <v-flex xs12>
         <v-card flat>
-          <v-card-text>No se encontraron apuntes</v-card-text>
+          <v-card-text class="text-center">No se encontraron apuntes</v-card-text>
         </v-card>
       </v-flex>
     </template>

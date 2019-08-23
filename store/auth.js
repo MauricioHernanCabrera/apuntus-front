@@ -13,15 +13,13 @@ export const actions = {
     }
   },
 
-  async login({ commit }, payload = {}) {
+  async login({ commit, dispatch }, payload = {}) {
     const { header } = payload;
 
     const config = {
       auth: header
     };
     const res = await this.$axios.$get(`/${basePath}/token`, config);
-
-    // commit('user/SET_USER', { token: res.data.token }, { root: true });
 
     const myDate = new Date();
     const sevenDays = new Date(myDate.setDate(myDate.getDate() + 7));
@@ -32,6 +30,8 @@ export const actions = {
     });
 
     this.$axios.setHeader('Authorization', `bearer ${res.data.token}`);
+    const resMe = await dispatch('user/me', {}, { root: true });
+    commit('user/SET_USER', resMe.data, { root: true });
 
     this.$router.push('/');
 

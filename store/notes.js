@@ -15,6 +15,7 @@ export const actions = {
     }
     const query = queryArray.join('').slice(0, -1);
     console.log(query);
+    console.log('holaaaaaaaaaaaaa');
     return this.$axios.$get(`/${basePath}?${query}`);
   },
 

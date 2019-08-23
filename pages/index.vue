@@ -1,8 +1,9 @@
 <template>
   <v-container>
     <v-layout row wrap mx-0>
-      <core-toolbar title="Inicio">
+      <core-toolbar :title="`Apuntes (${notes.length})`">
         <v-spacer></v-spacer>
+        <!-- <v-btn @click="calculo">calculo</v-btn> -->
 
         <v-slide-x-transition>
           <v-text-field
@@ -70,7 +71,9 @@ export default {
     let notes = [];
     let filters = {};
     try {
-      const resNotes = await store.dispatch("notes/getAll");
+      const resNotes = await store.dispatch("notes/getAll", {
+        queryParams: { page: 0 }
+      });
       notes = resNotes.data.array;
       filters.page = resNotes.data.nextPage;
     } catch (error) {
@@ -99,6 +102,15 @@ export default {
 
   methods: {
     ...mapActions("notes", ["getAll"]),
+
+    calculo() {
+      const obj = {};
+      this.notes.forEach(({ _id }) => {
+        obj[_id] = 0;
+      });
+      console.log(obj);
+      console.log(Object.keys(obj));
+    },
 
     filterNotes(filters) {
       this.filters = {

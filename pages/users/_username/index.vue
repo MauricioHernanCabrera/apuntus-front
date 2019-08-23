@@ -1,9 +1,14 @@
 <template>
   <v-container>
-    <core-toolbar :title="user.username">
+    <core-toolbar :title="isMyProfile? 'Mi perfil' : `Perfil de ${user.username}`">
       <template v-slot:extension-2>
         <v-tabs v-model="tabSelected" centered slider-color="yellow" background-color="transparent">
-          <v-tab v-for="item in tabs" :key="item.name" :href="`#${item.name}`">
+          <v-tab
+            v-for="item in tabs"
+            :key="item.name"
+            :href="`#${item.value}`"
+            @click="$router.push(`/users/${user.username}?noteName=${item.value}`)"
+          >
             <v-icon class="mr-2">{{ item.icon }}</v-icon>
             {{ item.name }}
           </v-tab>
@@ -11,24 +16,15 @@
       </template>
     </core-toolbar>
 
-    <v-layout row wrap>
-      <v-flex>
+    <v-layout row wrap mx-0>
+      <v-flex xs12>
         <v-tabs-items v-model="tabSelected">
-          <v-tab-item v-for="item in tabs" :key="item.name" :value="`${item.name}`">
+          <v-tab-item v-for="item in tabs" :key="item.name" :value="`${item.value}`">
             <notes :notes="filterNotes" :loading="loading" :toolbarActionsActive="false" />
           </v-tab-item>
         </v-tabs-items>
       </v-flex>
     </v-layout>
-    <!-- <v-layout justify-center align-center text-center>
-      <v-flex>
-        <v-avatar size="256" class="my-3">
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
-        </v-avatar>
-
-        <h1 class="display-1 font-weight-bold">{{ user.username }}</h1>
-      </v-flex>
-    </v-layout>-->
   </v-container>
 </template>
 
@@ -38,14 +34,18 @@ import sendRequest from "@/mixins/sendRequest";
 export default {
   mixins: [sendRequest],
 
-  async asyncData({ store, params }) {
+  watchQuery: ["noteName"],
+
+  async asyncData({ store, params, query: { noteName = "created" } }) {
     let user = {};
     let notes = [];
     let filters = {};
+    let isMyProfile = false;
 
     try {
       if (store.state.user.user.username === params.username) {
         user = store.state.user.user;
+        isMyProfile = true;
       } else {
         const resUser = await store.dispatch("user/getOne", {
           pathParams: { username: params.username }
@@ -53,12 +53,10 @@ export default {
         user = resUser.data;
       }
 
-      console.log(user);
-
       const resUserNotes = await store.dispatch("user/getUserNotes", {
-        pathParams: { _id: user._id }
+        pathParams: { _id: user._id },
+        queryParams: { noteName }
       });
-      console.log(resUserNotes);
       notes = resUserNotes.data.array;
       filters.page = resUserNotes.data.nextPage;
     } catch (error) {
@@ -67,7 +65,9 @@ export default {
       return {
         user,
         notes,
-        filters
+        filters,
+        tabSelected: noteName,
+        isMyProfile
       };
     }
   },
@@ -77,20 +77,20 @@ export default {
       tabs: [
         {
           name: "creados",
-          icon: "mdi-tools"
+          icon: "mdi-tools",
+          value: "created"
         },
         {
           name: "favoritos",
-          icon: "mdi-heart"
+          icon: "mdi-heart",
+          value: "favorites"
         },
         {
           name: "guardados",
-          icon: "turned_in"
+          icon: "turned_in",
+          value: "saved"
         }
-      ],
-      tabSelected: "creados",
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      ]
     };
   },
 
@@ -107,44 +107,7 @@ export default {
   },
 
   watch: {
-    async tabSelected(newValue) {
-      this.filters.page = 0;
-      console.log(newValue);
-
-      switch (newValue) {
-        case "creados": {
-          this.filters.noteName = "created";
-          break;
-        }
-        case "favoritos": {
-          this.filters.noteName = "favorites";
-          break;
-        }
-        case "guardados": {
-          this.filters.noteName = "saved";
-          break;
-        }
-        default: {
-          return;
-        }
-      }
-      const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
-
-      this.sendRequest(async () => {
-        const {
-          data: { array = [], nextPage = null },
-          message
-        } = await this.getUserNotes({
-          queryParams: this.filters,
-          pathParams: { _id: this.user._id }
-        });
-        this.notes = array;
-        this.filters.page = nextPage;
-      });
-    },
-
     async "position.y"(newValue) {
-      console.log(newValue);
       if (!this.filters.page) return;
       const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
 

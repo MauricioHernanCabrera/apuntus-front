@@ -26,9 +26,7 @@
         <v-layout align-center>
           <div>
             <v-chip :to="`/users/${note.owner.username}`">
-              <v-avatar>
-                <img src="/images/default-user-image.png" alt="El duki" />
-              </v-avatar>
+              <v-icon left class="hidden-xs-only">face</v-icon>
               {{ note.owner.username }}
             </v-chip>
 

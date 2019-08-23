@@ -44,11 +44,13 @@
 
         <template v-if="isAuth">
           <v-list-item :to="`/users/${user.username}`" color="white">
-            <v-list-item-avatar size="24" class="mr-5">
-              <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
-            </v-list-item-avatar>
+            <v-list-item-icon>
+              <v-icon>face</v-icon>
+            </v-list-item-icon>
 
-            <v-list-item-title class="ml-3">{{ user.username }}</v-list-item-title>
+            <v-list-item-content>
+              <v-list-item-title>Mi perfil</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
         </template>
       </v-list>
@@ -57,9 +59,15 @@
         <div class="pa-2">
           <v-btn v-if="isAuth" block @click="logout">Cerrar sesión</v-btn>
 
-          <v-btn v-else block class="black--text white" to="/auth/login">
-            <span>Iniciar sesion</span>
-          </v-btn>
+          <div v-else class="text-center">
+            <v-btn text block class="white--text" to="/auth/register">
+              <span>Registrate</span>
+            </v-btn>
+            <span class="white--text">o</span>
+            <v-btn block class="black--text white" to="/auth/login">
+              <span>Iniciar sesion</span>
+            </v-btn>
+          </div>
         </div>
       </template>
     </v-navigation-drawer>
