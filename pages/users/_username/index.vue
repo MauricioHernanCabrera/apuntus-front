@@ -36,7 +36,7 @@ export default {
 
   watchQuery: ["noteName"],
 
-  async asyncData({ store, params, query }) {
+  async asyncData({ store, params, query, redirect }) {
     let user = {};
     let data = {
       array: [],
@@ -67,6 +67,7 @@ export default {
       filters.noteName = query.noteName;
     } catch (error) {
       store.dispatch("notification/handleError", error);
+      redirect("/");
     } finally {
       return {
         user,

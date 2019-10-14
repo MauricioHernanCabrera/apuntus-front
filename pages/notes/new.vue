@@ -11,14 +11,14 @@
                 style="font-size: 14px;"
               >Archivos (*)</label>
 
-              <no-ssr>
+              <client-only>
                 <file-pond
                   ref="pond"
                   @updatefiles="handleUpdateFiles"
                   label-idle="Arrastra tus archivos o clickea para agregarlos"
                   :allow-multiple="true"
                 />
-              </no-ssr>
+              </client-only>
             </v-flex>
 
             <v-flex xs12>

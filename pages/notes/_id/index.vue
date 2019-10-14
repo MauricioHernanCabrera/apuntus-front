@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <core-toolbar :title="`Apunte de ${note.owner.username}`"></core-toolbar>
+  <v-container v-if="Object.keys(note).length > 0">
+    <core-toolbar :title="`Apunte de ${note && note.owner? note.owner.username : ''}`"></core-toolbar>
 
     <v-layout row wrap mx-0>
       <v-flex xs12>
@@ -66,7 +66,7 @@ import { getIconForFile } from "vscode-icons-js";
 export default {
   mixins: [sendRequest, handleForm],
 
-  async asyncData({ store, params: { id: _id }, router }) {
+  async asyncData({ store, params: { id: _id }, redirect }) {
     let note = {};
     let data = {
       files: []
@@ -101,7 +101,7 @@ export default {
       filters.pageToken = nextPageToken;
     } catch (error) {
       store.dispatch("notification/handleError", error);
-      router.push("/");
+      redirect("/");
     } finally {
       return {
         note,
@@ -126,10 +126,12 @@ export default {
 
         this.data = {
           ...data,
-          files: data.files.map(item => ({
-            ...item,
-            icon: getIconForFile(item.name)
-          }))
+          files: this.data.files.concat(
+            data.files.map(item => ({
+              ...item,
+              icon: getIconForFile(item.name)
+            }))
+          )
         };
 
         const { nextPageToken = null } = data;
