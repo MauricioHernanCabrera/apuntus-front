@@ -20,7 +20,7 @@
       <v-flex xs12>
         <v-tabs-items v-model="tabSelected">
           <v-tab-item v-for="item in tabs" :key="item.name" :value="`${item.value}`">
-            <notes :notes="filterNotes" :loading="loading" :toolbarActionsActive="false" />
+            <notes :notes="data.array" :loading="loading" :toolbarActionsActive="false" />
           </v-tab-item>
         </v-tabs-items>
       </v-flex>
@@ -36,10 +36,15 @@ export default {
 
   watchQuery: ["noteName"],
 
-  async asyncData({ store, params, query: { noteName = "created" } }) {
+  async asyncData({ store, params, query }) {
     let user = {};
-    let notes = [];
+    let data = {
+      array: [],
+      total: 0
+    };
     let filters = {};
+    console.log("Entro");
+    console.log(query.noteName);
     let isMyProfile = false;
 
     try {
@@ -53,20 +58,21 @@ export default {
         user = resUser.data;
       }
 
-      const resUserNotes = await store.dispatch("user/getUserNotes", {
+      const resUserNotes = await store.dispatch("user/getNoteList", {
         pathParams: { _id: user._id },
-        queryParams: { noteName }
+        queryParams: { noteName: query.noteName }
       });
-      notes = resUserNotes.data.array;
+      data = resUserNotes.data;
       filters.page = resUserNotes.data.nextPage;
+      filters.noteName = query.noteName;
     } catch (error) {
       store.dispatch("notification/handleError", error);
     } finally {
       return {
         user,
-        notes,
+        data,
         filters,
-        tabSelected: noteName,
+        tabSelected: query.noteName,
         isMyProfile
       };
     }
@@ -95,39 +101,30 @@ export default {
   },
 
   computed: {
-    ...mapState(["position"]),
-
-    filterNotes() {
-      return this.notes.map(({ note, createdAt, updatedAt }) => ({
-        ...note,
-        createdAt,
-        updatedAt
-      }));
-    }
+    ...mapState(["position"])
   },
 
   watch: {
     async "position.y"(newValue) {
       if (!this.filters.page) return;
-      const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
 
+      const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
       if (!(fullHeight >= document.body.clientHeight)) return;
+
       this.sendRequest(async () => {
-        const {
-          data: { array = [], nextPage = null },
-          message
-        } = await this.getUserNotes({
+        const { data, message } = await this.getNoteList({
           queryParams: this.filters,
           pathParams: { _id: this.user._id }
         });
-        this.notes = this.notes.concat(array);
+        this.data = { ...data, array: this.data.array.concat(data.array) };
+        const { nextPage = null } = data;
         this.filters.page = nextPage;
       });
     }
   },
 
   methods: {
-    ...mapActions("user", ["getUserNotes"])
+    ...mapActions("user", ["getNoteList"])
   }
 };
 </script>

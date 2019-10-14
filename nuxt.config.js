@@ -18,7 +18,7 @@ const page = {
   description: '',
   safe_img: `${FRONT_URL}/images/safe_image.png`,
   safe_img_alt: 'Image of Apuntus',
-  favicon: `${FRONT_URL}/images/logo_apuntus.ico`
+  favicon: `${FRONT_URL}/images/logo-apuntus-original.ico`
 };
 
 module.exports = {
@@ -72,7 +72,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/styles.css', 'animate.css'],
+  css: ['~/assets/styles.css', 'animate.css', 'filepond/dist/filepond.min.css'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -81,12 +81,13 @@ module.exports = {
     '~/plugins/vuelidate',
     '~/plugins/auth',
     // { src: '~/plugins/ga', ssr: false }
+    { src: '@/plugins/vue-filepond', ssr: false },
     { src: '~/plugins/position', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
    */
-  devModules: ['@nuxtjs/vuetify'],
+  buildModules: ['@nuxtjs/vuetify'],
   /*
    ** Nuxt.js modules
    */
@@ -113,8 +114,8 @@ module.exports = {
     start_url: '/',
     scope: '/',
     display: 'standalone',
-    background_color: '#fff',
-    theme_color: '#64B5F6'
+    background_color: '#2196f3',
+    theme_color: '#1769aa'
   },
   /*
    ** vuetify module configuration

@@ -22,11 +22,11 @@ export const actions = {
     const res = await this.$axios.$get(`/${basePath}/token`, config);
 
     const myDate = new Date();
-    const sevenDays = new Date(myDate.setDate(myDate.getDate() + 7));
+    const expires = new Date(myDate.setDate(myDate.getDate() + 356));
 
     this.$cookies.set('token', res.data.token, {
       path: '/',
-      expires: sevenDays
+      expires
     });
 
     this.$axios.setHeader('Authorization', `bearer ${res.data.token}`);

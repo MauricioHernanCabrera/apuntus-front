@@ -1,9 +1,8 @@
 <template>
   <v-container>
     <v-layout row wrap mx-0>
-      <core-toolbar :title="`Apuntes (${notes.length})`">
+      <core-toolbar :title="`Inicio - ${data.total} resultado(s)`">
         <v-spacer></v-spacer>
-        <!-- <v-btn @click="calculo">calculo</v-btn> -->
 
         <v-slide-x-transition>
           <v-text-field
@@ -42,7 +41,7 @@
       </core-toolbar>
 
       <v-flex xs12>
-        <notes :notes="notes" :loading="loading" />
+        <notes :notes="data.array" :loading="loading" />
       </v-flex>
 
       <form-filter
@@ -68,20 +67,26 @@ export default {
   mixins: [sendRequest, handleForm],
 
   async asyncData({ store }) {
-    let notes = [];
+    let data = {
+      array: [],
+      total: 0
+    };
     let filters = {};
+
     try {
       const resNotes = await store.dispatch("notes/getAll", {
         queryParams: { page: 0 }
       });
-      notes = resNotes.data.array;
-      filters.page = resNotes.data.nextPage;
+      data = resNotes.data;
+
+      const { nextPage = null } = data;
+      filters.page = nextPage;
     } catch (error) {
       console.log(error);
       store.dispatch("notification/handleError", error);
     } finally {
       return {
-        notes,
+        data,
         filters
       };
     }
@@ -103,40 +108,30 @@ export default {
   methods: {
     ...mapActions("notes", ["getAll"]),
 
-    calculo() {
-      const obj = {};
-      this.notes.forEach(({ _id }) => {
-        obj[_id] = 0;
-      });
-      console.log(obj);
-      console.log(Object.keys(obj));
-    },
-
     filterNotes(filters) {
-      this.filters = {
-        ...this.filters,
-        ...filters,
-        page: 0,
-        search: ""
-      };
+      this.filters = { ...this.filters, ...filters, page: 0, search: "" };
+
       this.sendRequest(async () => {
-        const {
-          data: { array = [], nextPage = null },
-          message
-        } = await this.getAll({ queryParams: this.filters });
-        this.notes = array;
+        const { data, message } = await this.getAll({
+          queryParams: this.filters
+        });
+
+        this.data = data;
+        const { nextPage = null } = data;
         this.filters.page = nextPage;
       });
     },
 
     searchNotes() {
       this.filters.page = 0;
+
       this.sendRequest(async () => {
-        const {
-          data: { array = [], nextPage = null },
-          message
-        } = await this.getAll({ queryParams: this.filters });
-        this.notes = array;
+        const { data, message } = await this.getAll({
+          queryParams: this.filters
+        });
+
+        this.data = data;
+        const { nextPage = null } = data;
         this.filters.page = nextPage;
       });
     }
@@ -149,11 +144,16 @@ export default {
 
       if (!(fullHeight >= document.body.clientHeight)) return;
       this.sendRequest(async () => {
-        const {
-          data: { array = [], nextPage = null },
-          message
-        } = await this.getAll({ queryParams: this.filters });
-        this.notes = this.notes.concat(array);
+        const { data, message } = await this.getAll({
+          queryParams: this.filters
+        });
+
+        this.data = {
+          ...data,
+          array: this.data.array.concat(data.array)
+        };
+
+        const { nextPage = null } = data;
         this.filters.page = nextPage;
       });
     }

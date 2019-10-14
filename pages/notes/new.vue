@@ -1,13 +1,30 @@
 <template>
-  <v-container grid-list-md>
+  <v-container grid-list-md fill-height>
     <core-toolbar title="Nuevo apunte"></core-toolbar>
     <v-layout row wrap mx-0>
       <v-flex xs12>
-        <v-form>
+        <v-form @submit.prevent="createNote">
           <v-layout row wrap mx-0>
+            <v-flex xs12>
+              <label
+                class="v-label v-label--active theme--light"
+                style="font-size: 14px;"
+              >Archivos (*)</label>
+
+              <no-ssr>
+                <file-pond
+                  ref="pond"
+                  @updatefiles="handleUpdateFiles"
+                  label-idle="Arrastra tus archivos o clickea para agregarlos"
+                  :allow-multiple="true"
+                />
+              </no-ssr>
+            </v-flex>
+
             <v-flex xs12>
               <v-text-field v-model="form.title" placeholder="Mi apunte" label="Titulo (*)"></v-text-field>
             </v-flex>
+
             <v-flex xs12>
               <v-textarea
                 v-model="form.description"
@@ -15,6 +32,7 @@
                 label="Descripción"
               ></v-textarea>
             </v-flex>
+
             <v-flex xs12 md6>
               <v-autocomplete
                 v-model="form.institution"
@@ -53,6 +71,7 @@
                 </v-card>
               </v-autocomplete>
             </v-flex>
+
             <v-expand-transition>
               <v-flex xs12 md6>
                 <v-autocomplete
@@ -92,6 +111,7 @@
                 </v-autocomplete>
               </v-flex>
             </v-expand-transition>
+
             <v-flex xs12 md6>
               <v-autocomplete
                 v-model="form.codeNote"
@@ -106,6 +126,7 @@
                 @click:append="form.codeNote = null"
               ></v-autocomplete>
             </v-flex>
+
             <v-flex xs12 md6>
               <v-autocomplete
                 v-model="form.codeYear"
@@ -119,6 +140,49 @@
                 :append-icon="form.codeYear? 'mdi-close' : 'mdi-menu-down'"
                 @click:append="form.codeYear = null"
               ></v-autocomplete>
+            </v-flex>
+
+            <v-flex xs12>
+              <v-footer height="56px" app v-if="$vuetify.breakpoint.mdAndDown">
+                <v-container fill-height class="pa-0">
+                  <v-layout align-center>
+                    <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
+
+                    <v-spacer />
+
+                    <v-btn
+                      :disabled="$v.$invalid || loading"
+                      depressed
+                      :loading="loading"
+                      type="submit"
+                      color="primary"
+                    >
+                      Crear
+                      <span slot="loader" class="custom-loader">
+                        <v-icon light>cached</v-icon>
+                      </span>
+                    </v-btn>
+                  </v-layout>
+                </v-container>
+              </v-footer>
+
+              <v-card-actions v-else>
+                <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                  :disabled="$v.$invalid || loading"
+                  depressed
+                  type="submit"
+                  color="primary"
+                  :loading="loading"
+                >
+                  Crear
+                  <span slot="loader" class="custom-loader">
+                    <v-icon light>cached</v-icon>
+                  </span>
+                </v-btn>
+              </v-card-actions>
             </v-flex>
           </v-layout>
         </v-form>
@@ -144,6 +208,17 @@
       @cancel-form="cancelDialog"
       @submit-form="createSubject"
     />
+
+    <v-dialog v-if="countFilesUploaded >= 0" :value="true" persistent width="300">
+      <v-card color="primary" dark class="text-xs-center">
+        <v-card-text class="py-3">
+          Por favor espere a que termine de subir el apunte
+          <br />
+          <v-progress-linear :value="progressTotal" color="white" class="mb-0"></v-progress-linear>
+          <p class="mb-0 mt-3">{{ countFilesUploaded }} / {{ form.files.length }}</p>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -153,9 +228,22 @@ import { filterAutocomplete } from "@/helpers/removeAccent";
 import deleteAutocompleteInput from "@/mixins/deleteAutocompleteInput";
 import sendRequest from "@/mixins/sendRequest";
 import handleForm from "@/mixins/handleForm";
+import { required, minLength } from "vuelidate/lib/validators";
 
 export default {
   mixins: [deleteAutocompleteInput, sendRequest, handleForm],
+
+  validations: {
+    form: {
+      title: { required },
+      institution: { required },
+      subject: { required },
+      codeNote: { required },
+      codeYear: { required },
+      files: { required }
+      // files: { minLength: minLength(1), $each: true }
+    }
+  },
 
   async asyncData({ store }) {
     let institutions = [];
@@ -189,11 +277,13 @@ export default {
       form: {
         title: "",
         description: "",
-        instutition: "",
+        institution: "",
         subject: "",
         codeNote: "",
         codeYear: ""
-      }
+      },
+
+      countFilesUploaded: -1
     };
   },
 
@@ -215,14 +305,21 @@ export default {
     ...mapActions([
       "institutions/getSubjects",
       "institutions/createOne",
-      "institutions/createSubject"
+      "institutions/createSubject",
+      "notes/createOne",
+      "notes/files/createOne"
     ]),
 
     filterAutocomplete,
 
-    createInstitution({ newValue: body }) {
-      console.log("createInstitution");
+    handleUpdateFiles(files) {
+      this.form = {
+        ...this.form,
+        files: files.map(item => item.file)
+      };
+    },
 
+    createInstitution({ newValue: body }) {
       this.sendRequest(async () => {
         const resInstitution = await this["institutions/createOne"]({
           body
@@ -246,6 +343,35 @@ export default {
         this.form.subject = resSubject.data._id;
         return resSubject;
       });
+    },
+
+    createNote({}) {
+      this.sendRequest(async () => {
+        const { institution, files, ...body } = this.form;
+        const { data, message } = await this["notes/createOne"]({
+          body
+        });
+
+        this.countFilesUploaded = 0;
+        for (let i = 0; i < files.length; i++) {
+          await this["notes/files/createOne"]({
+            body: { file: files[i] },
+            pathParams: { _id: data._id }
+          });
+          this.countFilesUploaded = i + 1;
+        }
+
+        this.$router.push(`/notes/${data._id}`);
+      });
+    },
+
+    pad2: number =>
+      String(number).length == 1 ? `0${number}` : number.toFixed(2)
+  },
+
+  computed: {
+    progressTotal() {
+      return this.pad2((this.countCompleted * 100) / this.form.files.length);
     }
   }
 };

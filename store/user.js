@@ -27,11 +27,11 @@ export const actions = {
     return this.$axios.$get(`/${basePath}/me/`);
   },
 
-  getUserNotes({}, payload = {}) {
+  getNoteList({}, payload = {}) {
     const { queryParams = {}, pathParams = {} } = payload;
     const { noteName = 'created', page = 0 } = queryParams;
     const { _id } = pathParams;
-    console.log(noteName);
+    console.log(queryParams);
     return this.$axios.$get(
       `/${basePath}/${_id}/notes?page=${page}&noteName=${noteName}`
     );
