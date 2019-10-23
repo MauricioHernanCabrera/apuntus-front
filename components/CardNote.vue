@@ -1,6 +1,6 @@
 <template>
-  <v-flex xs12>
-    <v-card flat>
+  <div class="container-card-note">
+    <v-card flat class="card-note">
       <nuxt-link
         :to="`/notes/${note._id}`"
         style="position: absolute; height: 100%; width: 100%; top: 0; left: 0;"
@@ -16,8 +16,8 @@
         <v-breadcrumbs
           class="pa-0"
           :items="[
-            { text: note.subject.institution.name, disabled: true, href: '' },
-            { text: note.subject.name, disabled: true, href: '' }]"
+              { text: note.subject.institution.name, disabled: true, href: '' },
+              { text: note.subject.name, disabled: true, href: '' }]"
           divider="/"
         />
 
@@ -31,12 +31,12 @@
             </v-chip>
 
             <v-chip color="accent">
-              <v-icon left class="hidden-xs-only">mdi-note-outline</v-icon>
+              <v-icon left class="hidden-xs-only">mdi-note-text</v-icon>
               {{ note.codeNote.name }}
             </v-chip>
 
             <v-chip :color="colorCodeYear(note.codeYear.name)">
-              <v-icon left class="hidden-xs-only">mdi-timer-sand-empty</v-icon>
+              <v-icon left class="hidden-xs-only">mdi-timer</v-icon>
               {{ note.codeYear.name }}
             </v-chip>
           </div>
@@ -44,9 +44,11 @@
           <v-spacer />
 
           <div class="d-flex align-start" v-if="toolbarActionsActive">
-            <v-btn icon class="ma-0">
-              <v-icon color="#707070">share</v-icon>
-            </v-btn>
+            <!-- <v-btn icon class="ma-0">
+                <v-icon color="#707070">share</v-icon>
+            </v-btn>-->
+
+            <btn-share :url="`${FRONT_URL}/jobs/${note._id}`" />
 
             <div class="d-flex justify-center align-center" style="flex-direction: column;">
               <v-btn icon class="ma-0" v-if="note.isSaved" @click="toggleSaved">
@@ -86,19 +88,20 @@
         </v-layout>
       </v-card-text>
     </v-card>
-
-    <v-divider></v-divider>
-  </v-flex>
+  </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
+import BtnShare from "@/components/BtnShare";
 import moment from "moment";
 moment.locale("es");
 
 export default {
   mixins: [sendRequest],
+
+  components: { BtnShare },
 
   props: {
     note: {
@@ -114,7 +117,8 @@ export default {
 
   data() {
     return {
-      currentYear: new Date().getFullYear()
+      currentYear: new Date().getFullYear(),
+      FRONT_URL: process.env.FRONT_URL
     };
   },
 
@@ -192,10 +196,23 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .p-absolute {
   position: absolute;
   top: 0;
   left: 0;
+}
+.container-card-note {
+  .card-note {
+    transition: 0.15s transform;
+    border-bottom: 1px solid #dcdcdc;
+
+    &:hover {
+      border: 1px solid #dcdcdc;
+      border-bottom: 0;
+      box-shadow: 0px 10px #dcdcdc;
+      transform: translate(0px, -10px);
+    }
+  }
 }
 </style>

@@ -2,12 +2,18 @@ export const state = () => ({
   position: {
     x: 0,
     y: 0
-  }
+  },
+
+  drawer: null
 });
 
 export const mutations = {
   SET_POSITION(state, position) {
     state.position = position;
+  },
+
+  SET_DRAWER(state, drawer) {
+    state.drawer = drawer;
   }
 };
 

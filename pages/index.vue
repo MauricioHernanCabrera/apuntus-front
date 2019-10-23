@@ -61,10 +61,16 @@
 import { mapState, mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
 import handleForm from "@/mixins/handleForm";
+import CoreToolbar from "@/components/CoreToolbar";
+import FormFilter from "@/components/FormFilter";
+import Notes from "@/components/Notes";
+
 export default {
   name: "Home",
 
   mixins: [sendRequest, handleForm],
+
+  components: { CoreToolbar, FormFilter, Notes },
 
   async asyncData({ store }) {
     let data = {
@@ -82,7 +88,6 @@ export default {
       const { nextPage = null } = data;
       filters.page = nextPage;
     } catch (error) {
-      console.log(error);
       store.dispatch("notification/handleError", error);
     } finally {
       return {

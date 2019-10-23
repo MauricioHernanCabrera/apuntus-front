@@ -229,9 +229,14 @@ import deleteAutocompleteInput from "@/mixins/deleteAutocompleteInput";
 import sendRequest from "@/mixins/sendRequest";
 import handleForm from "@/mixins/handleForm";
 import { required, minLength } from "vuelidate/lib/validators";
+import CoreToolbar from "@/components/CoreToolbar";
+import FormSubject from "@/components/FormSubject";
+import FormInstitution from "@/components/FormInstitution";
 
 export default {
   mixins: [deleteAutocompleteInput, sendRequest, handleForm],
+
+  components: { CoreToolbar, FormSubject, FormInstitution },
 
   validations: {
     form: {
@@ -331,7 +336,6 @@ export default {
     },
 
     createSubject({ newValue: body }) {
-      console.log("createSubject");
       this.sendRequest(async () => {
         const resSubject = await this["institutions/createSubject"]({
           body,

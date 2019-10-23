@@ -26,6 +26,11 @@ module.exports = {
   /*
    ** Headers of the page
    */
+  env: {
+    FRONT_URL,
+    API_URL
+  },
+
   head: {
     title: page.title,
     meta: [
@@ -56,7 +61,7 @@ module.exports = {
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp'
+          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
       },
       {
         rel: 'stylesheet',

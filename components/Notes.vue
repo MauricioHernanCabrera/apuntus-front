@@ -2,12 +2,14 @@
   <v-layout mx-0 row wrap>
     <!-- <pre>{{ notes }}</pre> -->
     <template v-if="notes.length > 0">
-      <card-note
-        v-for="item in notes"
-        :key="item._id"
-        :note="item"
-        :toolbarActionsActive="toolbarActionsActive"
-      />
+      <v-flex xs12>
+        <card-note
+          v-for="item in notes"
+          :key="item._id"
+          :note="item"
+          :toolbarActionsActive="toolbarActionsActive"
+        />
+      </v-flex>
 
       <v-flex xs12 text-center my-5 v-if="loading">
         <v-progress-circular color="accent" indeterminate size="64"></v-progress-circular>
@@ -25,7 +27,11 @@
 </template>
 
 <script>
+import CardNote from "@/components/CardNote";
+
 export default {
+  components: { CardNote },
+
   props: {
     notes: {
       type: Array,

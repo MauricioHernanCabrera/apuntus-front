@@ -31,8 +31,13 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
+import CoreToolbar from "@/components/CoreToolbar";
+import Notes from "@/components/Notes";
+
 export default {
   mixins: [sendRequest],
+
+  components: { CoreToolbar, Notes },
 
   watchQuery: ["noteName"],
 
@@ -43,8 +48,6 @@ export default {
       total: 0
     };
     let filters = {};
-    console.log("Entro");
-    console.log(query.noteName);
     let isMyProfile = false;
 
     try {

@@ -1,81 +1,21 @@
 <template>
-  <div>
-    <v-app-bar app color="primary" dark class="elevation-0">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+  <v-app-bar app color="primary" dark class="elevation-0">
+    <v-app-bar-nav-icon @click="SET_DRAWER(!drawer)"></v-app-bar-nav-icon>
+    <v-btn v-if="$route.name !== 'index'" icon @click="$router.back()">
+      <v-icon>mdi-arrow-left</v-icon>
+    </v-btn>
 
-      <v-toolbar-title v-if="title.length > 0">{{ title }}</v-toolbar-title>
-      <slot />
+    <v-toolbar-title v-if="title.length > 0">{{ title }}</v-toolbar-title>
+    <slot />
 
-      <template v-slot:extension v-if="$route.name === 'users-username'">
-        <slot name="extension-2"></slot>
-      </template>
-    </v-app-bar>
-
-    <v-navigation-drawer class="primary" v-model="drawer" app dark rounded>
-      <v-list rounded>
-        <v-list-item three-line>
-          <v-list-item-content>
-            <v-list-item-title class="d-flex justify-center">
-              <logo />
-            </v-list-item-title>
-            <v-list-item-subtitle
-              class="text-center"
-            >Encontra los mejores apuntes compartido por estudiantes</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-divider class="my-2"></v-divider>
-
-        <v-list-item
-          v-for="item in items"
-          :key="item.name"
-          color="white"
-          :exact="item.isExact"
-          :to="item.to"
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <template v-if="isAuth">
-          <v-list-item :to="`/users/${user.username}`" color="white">
-            <v-list-item-icon>
-              <v-icon>face</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title>Mi perfil</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-      </v-list>
-
-      <template v-slot:append>
-        <div class="pa-2">
-          <v-btn v-if="isAuth" block @click="logout">Cerrar sesión</v-btn>
-
-          <div v-else class="text-center">
-            <v-btn text block class="white--text" to="/auth/register">
-              <span>Registrate</span>
-            </v-btn>
-            <span class="white--text">o</span>
-            <v-btn block class="black--text white" to="/auth/login">
-              <span>Iniciar sesion</span>
-            </v-btn>
-          </div>
-        </div>
-      </template>
-    </v-navigation-drawer>
-  </div>
+    <template v-slot:extension v-if="$route.name === 'users-username'">
+      <slot name="extension-2"></slot>
+    </template>
+  </v-app-bar>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   props: {
@@ -86,42 +26,15 @@ export default {
     iconBackName: {
       type: String,
       default: "arrow_back"
-    },
-    backActive: {
-      type: Boolean,
-      default: true
     }
   },
 
-  data() {
-    return {
-      drawer: null,
-
-      items: [
-        {
-          name: "Inicio",
-          to: "/",
-          icon: "mdi-home-outline",
-          isExact: true
-        },
-
-        {
-          name: "Nuevo apunte",
-          to: "/notes/new",
-          icon: "mdi-cloud-upload-outline",
-          isExact: true
-        }
-      ]
-    };
-  },
-
   methods: {
-    ...mapActions("auth", ["logout"])
+    ...mapMutations(["SET_DRAWER"])
   },
 
   computed: {
-    ...mapGetters("user", ["isAuth"]),
-    ...mapState("user", ["user"])
+    ...mapState(["drawer"])
   }
 };
 </script>
