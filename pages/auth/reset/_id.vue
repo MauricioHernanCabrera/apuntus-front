@@ -58,6 +58,8 @@
 import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
+import { configMeta } from "@/helpers/seo";
+
 export default {
   mixins: [sendRequest],
   middleware: "isAuth",
@@ -86,6 +88,18 @@ export default {
         user
       };
     }
+  },
+
+  head() {
+    const page = {
+      title: "Reinicia tu contraseña de Apuntus",
+      description: "Reinicia tu contraseña con tu email en Apuntus"
+    };
+
+    return {
+      title: page.title,
+      meta: configMeta(page)
+    };
   },
 
   data() {

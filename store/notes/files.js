@@ -3,14 +3,16 @@ const basePath = 'notes';
 const secondPath = 'files';
 
 export const actions = {
-  createOne({}, { body = {}, pathParams }) {
+  createOne({}, { body = {}, pathParams, config = {} }) {
     const { file } = body;
 
     const formData = new FormData();
     formData.append('file', file);
+
     return this.$axios.$post(
       `/${basePath}/${pathParams._id}/${secondPath}`,
-      formData
+      formData,
+      config
     );
   },
 

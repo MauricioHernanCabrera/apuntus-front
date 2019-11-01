@@ -15,9 +15,12 @@ if (process.env.NODE_ENV === 'production') {
 const page = {
   title: 'Apuntus',
   short_name: 'Apuntus',
-  description: '',
-  safe_img: `${FRONT_URL}/images/safe_image.png`,
-  safe_img_alt: 'Image of Apuntus',
+  description: 'Encontra los mejores apuntes compartido por estudiantes',
+  siteName: 'Apuntus',
+  safeImg: {
+    url: `${FRONT_URL}/images/safe_image.png`,
+    alt: 'Image of Apuntus'
+  },
   favicon: `${FRONT_URL}/images/logo-apuntus-original.ico`
 };
 
@@ -39,23 +42,43 @@ module.exports = {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1,  user-scalable=no'
       },
+      { hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
+      {
+        hid: 'og-site_name',
+        property: 'og:site_name',
+        content: `${page.siteName}`
+      },
+      { hid: 'og-type', property: 'og:type', content: 'website' },
+
       {
         hid: 'description',
         name: 'description',
         content: `${page.description}`
       },
-      { name: 'twitter:card', content: 'summary' },
-      { name: 'twitter:title', content: `${page.title}` },
-      { name: 'twitter:description', content: `${page.description}` },
-      { name: 'twitter:image', content: `${page.safe_img}` },
-      { name: 'twitter:image:alt', content: `${page.safe_img_alt}` },
-
-      { property: 'og:type', content: 'website' },
-      { property: 'og:title', content: `${page.title}` },
-      { property: 'og:image', content: `${page.safe_img}` },
-      { property: 'og:site_name', content: `${page.title}` },
-      { property: 'og:description', content: `${page.description}` }
+      {
+        hid: 'og-description',
+        property: 'og:description',
+        content: `${page.description}`
+      },
+      {
+        hid: 'twitter-title',
+        name: 'twitter:title',
+        content: `${page.title}`
+      },
+      { hid: 'og-title', property: 'og:title', content: `${page.title}` },
+      {
+        hid: 'twitter-image-alt',
+        name: 'twitter:image:alt',
+        content: `${page.safeImg.alt}`
+      },
+      {
+        hid: 'twitter-image',
+        name: 'twitter:image',
+        content: `${page.safeImg.url}`
+      },
+      { hid: 'og-image', property: 'og:image', content: `${page.url}` }
     ],
+
     link: [
       { rel: 'icon', type: 'image/x-icon', href: page.favicon },
       {
@@ -68,7 +91,9 @@ module.exports = {
         href:
           'https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css'
       }
-    ]
+    ],
+
+    script: [{ src: 'https://apis.google.com/js/api.js' }]
   },
   /*
    ** Customize the progress-bar color
@@ -87,6 +112,7 @@ module.exports = {
     '~/plugins/auth',
     // { src: '~/plugins/ga', ssr: false }
     { src: '@/plugins/vue-filepond', ssr: false },
+    { src: '@/plugins/scroll-reveal', ssr: false },
     { src: '~/plugins/position', ssr: false }
   ],
   /*

@@ -31,7 +31,6 @@ export const actions = {
     const { queryParams = {}, pathParams = {} } = payload;
     const { noteName = 'created', page = 0 } = queryParams;
     const { _id } = pathParams;
-    console.log(queryParams);
     return this.$axios.$get(
       `/${basePath}/${_id}/notes?page=${page}&noteName=${noteName}`
     );

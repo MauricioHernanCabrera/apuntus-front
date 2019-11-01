@@ -212,10 +212,14 @@
     <v-dialog v-if="countFilesUploaded >= 0" :value="true" persistent width="300">
       <v-card color="primary" dark class="text-xs-center">
         <v-card-text class="py-3">
-          Por favor espere a que termine de subir el apunte
-          <br />
+          <p>Por favor espere a que termine de subir el apunte</p>
+
           <v-progress-linear :value="progressTotal" color="white" class="mb-0"></v-progress-linear>
-          <p class="mb-0 mt-3">{{ countFilesUploaded }} / {{ form.files.length }}</p>
+
+          <p class="mb-0 mt-3 text-right">
+            <!-- <span class="text-left">{{fileProgress}}%</span> -->
+            <span>{{ countFilesUploaded }} / {{ form.files.length }}</span>
+          </p>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -232,9 +236,12 @@ import { required, minLength } from "vuelidate/lib/validators";
 import CoreToolbar from "@/components/CoreToolbar";
 import FormSubject from "@/components/FormSubject";
 import FormInstitution from "@/components/FormInstitution";
+import { configMeta } from "@/helpers/seo";
 
 export default {
   mixins: [deleteAutocompleteInput, sendRequest, handleForm],
+
+  middleware: "isNotAuth",
 
   components: { CoreToolbar, FormSubject, FormInstitution },
 
@@ -248,6 +255,18 @@ export default {
       files: { required }
       // files: { minLength: minLength(1), $each: true }
     }
+  },
+
+  head() {
+    const page = {
+      title: `Nuevo apunte - Apuntus`,
+      description: "Crea un apunte en Apuntus"
+    };
+
+    return {
+      title: page.title,
+      meta: configMeta(page)
+    };
   },
 
   async asyncData({ store }) {
@@ -288,7 +307,8 @@ export default {
         codeYear: ""
       },
 
-      countFilesUploaded: -1
+      countFilesUploaded: -1,
+      fileProgress: 0
     };
   },
 
@@ -351,17 +371,27 @@ export default {
 
     createNote({}) {
       this.sendRequest(async () => {
+        this.countFilesUploaded = 0;
+
         const { institution, files, ...body } = this.form;
         const { data, message } = await this["notes/createOne"]({
           body
         });
 
-        this.countFilesUploaded = 0;
         for (let i = 0; i < files.length; i++) {
-          await this["notes/files/createOne"]({
-            body: { file: files[i] },
-            pathParams: { _id: data._id }
-          });
+          try {
+            await this["notes/files/createOne"]({
+              body: { file: files[i] },
+              pathParams: { _id: data._id }
+              // config: {
+              //   onUploadProgress: (event = {}) => {
+              //     const { total = 1, loaded = 0 } = event;
+              //     console.log({ total, loaded });
+              //     this.fileProgress = this.calculatePercent({ total, loaded });
+              //   }
+              // }
+            });
+          } catch (error) {}
           this.countFilesUploaded = i + 1;
         }
 
@@ -370,12 +400,22 @@ export default {
     },
 
     pad2: number =>
-      String(number).length == 1 ? `0${number}` : number.toFixed(2)
+      String(number).length == 1 ? `0${number}` : number.toFixed(2),
+
+    calculatePercent(event) {
+      try {
+        return Math.round((event.loaded * 100) / event.total);
+      } catch (error) {
+        return 0;
+      }
+    }
   },
 
   computed: {
     progressTotal() {
-      return this.pad2((this.countCompleted * 100) / this.form.files.length);
+      return this.pad2(
+        (this.countFilesUploaded * 100) / this.form.files.length
+      );
     }
   }
 };

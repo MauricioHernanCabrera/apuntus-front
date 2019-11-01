@@ -23,7 +23,7 @@
 
         <v-list-item-action>
           <v-btn text small color="grey lighten-1" depressed>
-            <span>ver archivo</span>
+            <span>abrir archivo</span>
           </v-btn>
         </v-list-item-action>
       </v-list-item>

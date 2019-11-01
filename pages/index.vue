@@ -41,7 +41,7 @@
       </core-toolbar>
 
       <v-flex xs12>
-        <notes :notes="data.array" :loading="loading" />
+        <notes :notes="data.array" :loading="loading" @filter="filterNotes" />
       </v-flex>
 
       <form-filter
@@ -64,6 +64,7 @@ import handleForm from "@/mixins/handleForm";
 import CoreToolbar from "@/components/CoreToolbar";
 import FormFilter from "@/components/FormFilter";
 import Notes from "@/components/Notes";
+import { configMeta } from "@/helpers/seo";
 
 export default {
   name: "Home",
@@ -71,6 +72,17 @@ export default {
   mixins: [sendRequest, handleForm],
 
   components: { CoreToolbar, FormFilter, Notes },
+
+  head() {
+    const page = {
+      title: "Inicio - Apuntus"
+    };
+
+    return {
+      title: page.title,
+      meta: configMeta(page)
+    };
+  },
 
   async asyncData({ store }) {
     let data = {

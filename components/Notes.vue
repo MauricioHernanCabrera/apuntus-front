@@ -8,6 +8,7 @@
           :key="item._id"
           :note="item"
           :toolbarActionsActive="toolbarActionsActive"
+          @filter="(filter) => $emit('filter', filter)"
         />
       </v-flex>
 

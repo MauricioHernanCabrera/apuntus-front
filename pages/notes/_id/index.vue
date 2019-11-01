@@ -4,7 +4,7 @@
 
     <v-layout row wrap mx-0>
       <v-flex xs12>
-        <card-note :note="note"></card-note>
+        <card-note :note="note" :hasHover="false"></card-note>
       </v-flex>
 
       <v-flex xs12>
@@ -22,11 +22,24 @@ import { getIconForFile } from "vscode-icons-js";
 import CardFiles from "@/components/CardFiles";
 import CoreToolbar from "@/components/CoreToolbar";
 import CardNote from "@/components/CardNote";
+import { configMeta } from "@/helpers/seo";
 
 export default {
   mixins: [sendRequest, handleForm],
 
   components: { CardFiles, CoreToolbar, CardNote },
+
+  head() {
+    const page = {
+      title: `${this.note.title} - Apuntus`,
+      description: this.note.description
+    };
+
+    return {
+      title: page.title,
+      meta: configMeta(page)
+    };
+  },
 
   async asyncData({ store, params: { id: _id }, redirect }) {
     let note = {};

@@ -29,7 +29,6 @@ export const actions = {
         commit('user/SET_USER', data);
       }
     } catch (error) {
-      // console.log(error);
       console.log('No se pudo loguear');
     }
   }

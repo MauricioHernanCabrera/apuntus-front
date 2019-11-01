@@ -33,6 +33,7 @@ import { mapState, mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
 import CoreToolbar from "@/components/CoreToolbar";
 import Notes from "@/components/Notes";
+import { configMeta } from "@/helpers/seo";
 
 export default {
   mixins: [sendRequest],
@@ -40,6 +41,19 @@ export default {
   components: { CoreToolbar, Notes },
 
   watchQuery: ["noteName"],
+
+  head() {
+    const { username } = this.user;
+    const page = {
+      title: `${username} - Apuntus`,
+      description: `Mira los apuntes creados, guardados y favoritos de ${username} en Apuntus`
+    };
+
+    return {
+      title: page.title,
+      meta: configMeta(page)
+    };
+  },
 
   async asyncData({ store, params, query, redirect }) {
     let user = {};

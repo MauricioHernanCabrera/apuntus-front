@@ -1,5 +1,13 @@
 <template>
-  <v-navigation-drawer class="primary" @input="SET_DRAWER" :value="drawer" app dark rounded>
+  <v-navigation-drawer
+    class="primary"
+    @input="SET_DRAWER"
+    :value="drawer"
+    app
+    dark
+    rounded
+    style="z-index: 1100;"
+  >
     <v-list rounded>
       <v-list-item three-line>
         <v-list-item-content>

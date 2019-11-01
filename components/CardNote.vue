@@ -1,6 +1,6 @@
 <template>
   <div class="container-card-note">
-    <v-card flat class="card-note">
+    <v-card flat class="card-note" :class="[hasHover && 'card-note-hover']">
       <nuxt-link
         :to="`/notes/${note._id}`"
         style="position: absolute; height: 100%; width: 100%; top: 0; left: 0;"
@@ -13,13 +13,21 @@
           <span class="text-truncate">{{ note.title }}</span>
           <time class="caption grey--text">{{ note.createdAt | formatTimeAgo }}</time>
         </h3>
-        <v-breadcrumbs
-          class="pa-0"
-          :items="[
-              { text: note.subject.institution.name, disabled: true, href: '' },
-              { text: note.subject.name, disabled: true, href: '' }]"
-          divider="/"
-        />
+
+        <v-breadcrumbs class="pa-0" :items="breadCrumbs(note)" divider="/">
+          <template v-slot:item="{ item }">
+            <v-breadcrumbs-item
+              style="color: rgba(0, 0, 0, 0.38); z-index: 10;"
+              @click="$emit('filter', item.institution? {
+                institution: note.subject.institution._id
+              } :
+              {
+                institution: note.subject.institution._id,
+                subject: note.subject._id
+              })"
+            >{{ item.text }}</v-breadcrumbs-item>
+          </template>
+        </v-breadcrumbs>
 
         <p class="mb-0">{{ note.description }}</p>
 
@@ -30,12 +38,15 @@
               {{ note.owner.username }}
             </v-chip>
 
-            <v-chip color="accent">
+            <v-chip color="accent" @click="$emit('filter', { codeNote: note.codeNote._id })">
               <v-icon left class="hidden-xs-only">mdi-note-text</v-icon>
               {{ note.codeNote.name }}
             </v-chip>
 
-            <v-chip :color="colorCodeYear(note.codeYear.name)">
+            <v-chip
+              :color="colorCodeYear(note.codeYear.name)"
+              @click="$emit('filter', { codeYear: note.codeYear._id })"
+            >
               <v-icon left class="hidden-xs-only">mdi-timer</v-icon>
               {{ note.codeYear.name }}
             </v-chip>
@@ -43,11 +54,7 @@
 
           <v-spacer />
 
-          <div class="d-flex align-start" v-if="toolbarActionsActive">
-            <!-- <v-btn icon class="ma-0">
-                <v-icon color="#707070">share</v-icon>
-            </v-btn>-->
-
+          <div class="d-flex align-start align-self-ce" v-if="toolbarActionsActive">
             <btn-share :url="`${FRONT_URL}/jobs/${note._id}`" />
 
             <div class="d-flex justify-center align-center" style="flex-direction: column;">
@@ -65,8 +72,14 @@
               style="flex-direction: column; position: relative;"
             >
               <transition
-                :enter-active-class="`animated ${note.isFavorite? 'rubberBand' : 'fadeIn'} p-absolute`"
-                :leave-active-class="`animated ${note.isFavorite? 'fadeOut' : 'zoomOut'}`"
+                :enter-active-class="
+                  `animated ${
+                    note.isFavorite ? 'rubberBand' : 'fadeIn'
+                  } p-absolute`
+                "
+                :leave-active-class="
+                  `animated ${note.isFavorite ? 'fadeOut' : 'zoomOut'}`
+                "
               >
                 <v-btn
                   v-if="note.isFavorite"
@@ -112,6 +125,11 @@ export default {
     toolbarActionsActive: {
       type: Boolean,
       default: true
+    },
+
+    hasHover: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -129,6 +147,20 @@ export default {
       "addSaved",
       "removeSaved"
     ]),
+
+    breadCrumbs({ subject }) {
+      const { name = "", _id = "", institution = {} } = subject;
+
+      return [
+        {
+          institution: institution._id,
+          text: institution.name,
+          disabled: true,
+          href: ""
+        },
+        { subject: _id, text: name, disabled: true, href: "" }
+      ];
+    },
 
     colorCodeYear(name) {
       if (name == "viejisimo") return "error";
@@ -151,7 +183,7 @@ export default {
           });
           this.note.isFavorite = false;
           this.note.countFavorites--;
-          return resFavorite;
+          // return resFavorite;
         });
       } else {
         this.sendRequest(async () => {
@@ -160,7 +192,7 @@ export default {
           });
           this.note.isFavorite = true;
           this.note.countFavorites++;
-          return resFavorite;
+          // return resFavorite;
         });
       }
     },
@@ -171,16 +203,18 @@ export default {
           const resSaved = await this.removeSaved({
             pathParams: { _id: this.note._id }
           });
+
           this.note.isSaved = false;
-          return resSaved;
+          // return resSaved;
         });
       } else {
         this.sendRequest(async () => {
           const resSaved = await this.addSaved({
             pathParams: { _id: this.note._id }
           });
+
           this.note.isSaved = true;
-          return resSaved;
+          // return resSaved;
         });
       }
     }
@@ -202,16 +236,20 @@ export default {
   top: 0;
   left: 0;
 }
+
 .container-card-note {
   .card-note {
-    transition: 0.15s transform;
+    transition: 0.15s;
+    border: 1px solid transparent;
     border-bottom: 1px solid #dcdcdc;
 
-    &:hover {
-      border: 1px solid #dcdcdc;
-      border-bottom: 0;
-      box-shadow: 0px 10px #dcdcdc;
-      transform: translate(0px, -10px);
+    &-hover {
+      &:hover {
+        border-top-color: #dcdcdc;
+        border-bottom-color: transparent;
+        box-shadow: 0px 7.5px #dcdcdc;
+        transform: translate(0px, -7.5px);
+      }
     }
   }
 }

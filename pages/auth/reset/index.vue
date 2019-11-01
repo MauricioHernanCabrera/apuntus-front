@@ -42,6 +42,7 @@
 import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
+import { configMeta } from "@/helpers/seo";
 
 export default {
   mixins: [sendRequest],
@@ -52,6 +53,18 @@ export default {
     form: {
       email: { required }
     }
+  },
+
+  head() {
+    const page = {
+      title: "Recupera tu contraseña de Apuntus",
+      description: "Recupera tu contraseña con tu email en Apuntus"
+    };
+
+    return {
+      title: page.title,
+      meta: configMeta(page)
+    };
   },
 
   data() {
