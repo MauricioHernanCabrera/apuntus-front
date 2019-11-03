@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="primary" dark class="elevation-0" style="z-index: 100;">
+  <v-app-bar app color="primary" dark class="elevation-0" style="z-index: 10;">
     <v-app-bar-nav-icon @click="SET_DRAWER(!drawer)" />
     <v-btn v-if="!(['index'].includes($route.name))" icon @click="$router.back()">
       <v-icon>mdi-arrow-left</v-icon>

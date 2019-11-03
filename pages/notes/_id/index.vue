@@ -3,6 +3,12 @@
     <core-toolbar :title="`Apunte de ${note && note.owner? note.owner.username : ''}`"></core-toolbar>
 
     <v-layout row wrap mx-0>
+      <v-flex xs12 v-if="isNewNote">
+        <v-alert
+          type="warning"
+        >Este apunte es nuevo, es probable que todavia no se hayan terminado de subir todos los archivos. Esto puede demorarse de 15 a 30 minutos</v-alert>
+      </v-flex>
+
       <v-flex xs12>
         <card-note :note="note" :hasHover="false"></card-note>
       </v-flex>
@@ -23,6 +29,8 @@ import CardFiles from "@/components/CardFiles";
 import CoreToolbar from "@/components/CoreToolbar";
 import CardNote from "@/components/CardNote";
 import { configMeta } from "@/helpers/seo";
+import moment from "moment";
+moment.locale("es");
 
 export default {
   mixins: [sendRequest, handleForm],
@@ -74,7 +82,16 @@ export default {
   },
 
   computed: {
-    ...mapState(["position"])
+    ...mapState(["position"]),
+
+    isNewNote() {
+      const createdAt = moment(new Date(this.note.createdAt)).add(
+        30,
+        "minutes"
+      );
+      const current = moment(new Date());
+      return createdAt.isAfter(current);
+    }
   },
 
   methods: {

@@ -1,45 +1,45 @@
 <template>
   <v-container>
-    <v-layout row wrap mx-0>
-      <core-toolbar :title="`${data.total} apunte(s)`">
-        <v-spacer></v-spacer>
+    <core-toolbar :title="`${data.total} apunte(s)`">
+      <v-spacer></v-spacer>
 
-        <v-slide-x-transition>
-          <v-text-field
-            autofocus
-            v-if="searchActive"
-            solo-inverted
-            color="primary"
-            flat
-            v-model="filters.search"
-            @blur="searchActive = false"
-            hide-details
-            label="Search"
-            append-icon="search"
-            @click:append="searchNotes"
-            @keyup.enter="searchNotes"
-          ></v-text-field>
-        </v-slide-x-transition>
+      <v-slide-x-transition>
+        <v-text-field
+          autofocus
+          v-if="searchActive"
+          solo-inverted
+          color="primary"
+          flat
+          v-model="filters.search"
+          @blur="searchActive = false"
+          hide-details
+          label="Search"
+          append-icon="search"
+          @click:append="searchNotes"
+          @keyup.enter="searchNotes"
+        ></v-text-field>
+      </v-slide-x-transition>
 
-        <v-scale-transition>
-          <v-btn v-if="!searchActive" icon @click="searchActive = true">
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-        </v-scale-transition>
-
-        <v-btn
-          icon
-          @click="setDialog({
-            title: 'Filtros',
-            data: filters,
-            nameBtnSubmit: 'Aplicar filtros',
-            active: 'filter-notes'
-          })"
-        >
-          <v-icon>mdi-filter-outline</v-icon>
+      <v-scale-transition>
+        <v-btn v-if="!searchActive" icon @click="searchActive = true">
+          <v-icon>mdi-magnify</v-icon>
         </v-btn>
-      </core-toolbar>
+      </v-scale-transition>
 
+      <v-btn
+        icon
+        @click="setDialog({
+          title: 'Filtros',
+          data: filters,
+          nameBtnSubmit: 'Aplicar filtros',
+          active: 'filter-notes'
+        })"
+      >
+        <v-icon>mdi-filter-outline</v-icon>
+      </v-btn>
+    </core-toolbar>
+
+    <v-layout row wrap mx-0>
       <v-flex xs12>
         <notes :notes="data.array" :loading="loading" @filter="filterNotes" />
       </v-flex>

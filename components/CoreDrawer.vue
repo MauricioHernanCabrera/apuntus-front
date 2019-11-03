@@ -6,7 +6,7 @@
     app
     dark
     rounded
-    style="z-index: 1100;"
+    style="z-index: 20;"
   >
     <v-list rounded>
       <v-list-item three-line>
@@ -23,7 +23,7 @@
       <v-divider class="my-2"></v-divider>
 
       <v-list-item
-        v-for="item in items"
+        v-for="item in routesBase"
         :key="item.name"
         color="white"
         :exact="item.isExact"
@@ -49,6 +49,24 @@
           </v-list-item-content>
         </v-list-item>
       </template>
+
+      <v-list-item
+        v-for="item in routesExtra"
+        :key="item.name"
+        color="white"
+        outlined
+        :exact="item.isExact"
+        :to="item.to"
+        :style="item.name == 'Apoya a apuntus' && { border: '2px solid white' }"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.name }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
 
     <template v-slot:append>
@@ -75,7 +93,7 @@ import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      items: [
+      routesBase: [
         {
           name: "Inicio",
           to: "/",
@@ -87,6 +105,22 @@ export default {
           name: "Nuevo apunte",
           to: "/notes/new",
           icon: "mdi-cloud-upload-outline",
+          isExact: true
+        }
+      ],
+
+      routesExtra: [
+        {
+          name: "Conoce al equipo",
+          to: "/meet-the-team",
+          icon: "mdi-account-group-outline",
+          isExact: true
+        },
+
+        {
+          name: "Apoya a apuntus",
+          to: "/sponsor",
+          icon: "mdi-help-circle-outline",
           isExact: true
         }
       ]

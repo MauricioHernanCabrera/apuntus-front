@@ -19,6 +19,7 @@
         </span>
       </v-btn>
     </core-toolbar>
+
     <v-layout row wrap mx-0>
       <v-flex xs12>
         <v-form @submit.prevent="createNote">
@@ -184,25 +185,6 @@
                   </v-layout>
                 </v-container>
               </v-footer>
-
-              <!-- <v-card-actions v-else>
-                <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
-                <v-spacer></v-spacer>
-
-                <v-btn
-                  :disabled="$v.$invalid || loading"
-                  depressed
-                  type="submit"
-                  color="primary"
-                  rounded
-                  :loading="loading"
-                >
-                  <v-icon light>add</v-icon>Crear
-                  <span slot="loader" class="custom-loader">
-                    <v-icon light>cached</v-icon>
-                  </span>
-                </v-btn>
-              </v-card-actions>-->
             </v-flex>
           </v-layout>
         </v-form>
@@ -229,6 +211,7 @@
       @submit-form="createSubject"
     />
 
+    <!-- style="z-index: 100;" -->
     <v-dialog v-if="countFilesUploaded >= 0" :value="true" persistent width="300">
       <v-card color="primary" dark class="text-xs-center">
         <v-card-text class="py-3">
@@ -237,7 +220,6 @@
           <v-progress-linear :value="progressTotal" color="white" class="mb-0"></v-progress-linear>
 
           <p class="mb-0 mt-3 text-right">
-            <!-- <span class="text-left">{{fileProgress}}%</span> -->
             <span>{{ countFilesUploaded }} / {{ form.files.length }}</span>
           </p>
         </v-card-text>
@@ -357,6 +339,7 @@ export default {
       "institutions/getSubjects",
       "institutions/createOne",
       "institutions/createSubject",
+      "notification/setNotification",
       "notes/createOne",
       "notes/files/createOne"
     ]),
@@ -364,9 +347,29 @@ export default {
     filterAutocomplete,
 
     handleUpdateFiles(files) {
+      const validFiles = [];
+      const SIZE_LIMIT = 50;
+      for (let i = 0; i < files.length; i++) {
+        const item = files[i];
+        const mb = item.file.size / 1024 / 1000;
+        console.log("mb", mb);
+        if (mb <= SIZE_LIMIT) {
+          console.log("Agregado!");
+          validFiles.push(item.file);
+        } else {
+          item.abortLoad();
+          this["notification/setNotification"]({
+            color: "warning",
+            duration: 5000,
+            message: `No se pueden subir archivos mayores a ${SIZE_LIMIT}Mb`
+          });
+          console.log("Eliminado");
+        }
+      }
+
       this.form = {
         ...this.form,
-        files: files.map(item => item.file)
+        files: validFiles
       };
     },
 
