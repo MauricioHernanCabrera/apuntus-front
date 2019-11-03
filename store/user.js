@@ -5,8 +5,8 @@ export const state = () => ({
 });
 
 export const getters = {
-  isAuth({ user: { username = null } }) {
-    return !!username;
+  isAuth({ user }) {
+    return user && user.username;
   }
 };
 

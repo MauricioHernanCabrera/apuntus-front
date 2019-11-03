@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-layout row wrap mx-0>
-      <core-toolbar :title="`Inicio - ${data.total} resultado(s)`">
+      <core-toolbar :title="`${data.total} apunte(s)`">
         <v-spacer></v-spacer>
 
         <v-slide-x-transition>

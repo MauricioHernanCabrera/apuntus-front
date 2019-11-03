@@ -8,7 +8,7 @@ export const actions = {
       this.$axios.setHeader('Authorization', `bearer ${token}`);
       console.log(resUser.message);
     } catch (error) {
-      this.$cookies.remove('token');
+      // this.$cookies.remove('token');
       console.log('No se pudo loguear', error);
     }
   },

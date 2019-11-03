@@ -8,7 +8,7 @@
       </v-flex>
 
       <v-flex xs12>
-        <card-files :files="data.files" :loading="loading" :note="note" />
+        <card-files :files="files" :loading="loading" :note="note" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -43,9 +43,7 @@ export default {
 
   async asyncData({ store, params: { id: _id }, redirect }) {
     let note = {};
-    let data = {
-      files: []
-    };
+    let files = [];
 
     let filters = {
       pageSize: 32
@@ -63,55 +61,15 @@ export default {
       ]);
 
       note = resNote.data;
-      data = {
-        ...resFiles.data,
-        files: resFiles.data.files.map(item => ({
-          ...item,
-          icon: getIconForFile(item.name)
-        }))
-      };
-
-      const { nextPageToken = null } = resFiles.data;
-
-      filters.pageToken = nextPageToken;
+      files = resFiles.data.map(item => ({ ...item, icon: getIconForFile(item.name) })) //prettier-ignore
     } catch (error) {
       store.dispatch("notification/handleError", error);
       redirect("/");
     } finally {
       return {
         note,
-        data,
-        filters
+        files
       };
-    }
-  },
-
-  watch: {
-    async "position.y"(newValue) {
-      if (!this.filters.pageToken) return;
-
-      const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
-      if (!(fullHeight >= document.body.clientHeight)) return;
-
-      this.sendRequest(async () => {
-        const { data, message } = await this["notes/files/getAll"]({
-          pathParams: { _id: this.note._id },
-          queryParams: this.filters
-        });
-
-        this.data = {
-          ...data,
-          files: this.data.files.concat(
-            data.files.map(item => ({
-              ...item,
-              icon: getIconForFile(item.name)
-            }))
-          )
-        };
-
-        const { nextPageToken = null } = data;
-        this.filters.pageToken = nextPageToken;
-      });
     }
   },
 

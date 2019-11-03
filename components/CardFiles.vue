@@ -2,7 +2,7 @@
   <v-card flat v-if="files.length">
     <v-list subheader class="pb-0">
       <v-subheader>
-        Archivos
+        {{ files.length }} Archivo(s)
         <v-spacer />
         <v-btn
           color="primary"

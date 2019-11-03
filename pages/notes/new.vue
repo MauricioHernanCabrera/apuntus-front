@@ -1,26 +1,28 @@
 <template>
   <v-container grid-list-md fill-height>
-    <core-toolbar title="Nuevo apunte"></core-toolbar>
+    <core-toolbar title="Nuevo apunte">
+      <v-spacer></v-spacer>
+
+      <v-btn
+        :disabled="$v.$invalid || loading"
+        depressed
+        @click="createNote"
+        color="white"
+        rounded
+        outlined
+        :loading="loading"
+        v-if="!$vuetify.breakpoint.mdAndDown"
+      >
+        <v-icon light>add</v-icon>Crear
+        <span slot="loader" class="custom-loader">
+          <v-icon light>cached</v-icon>
+        </span>
+      </v-btn>
+    </core-toolbar>
     <v-layout row wrap mx-0>
       <v-flex xs12>
         <v-form @submit.prevent="createNote">
           <v-layout row wrap mx-0>
-            <v-flex xs12>
-              <label
-                class="v-label v-label--active theme--light"
-                style="font-size: 14px;"
-              >Archivos (*)</label>
-
-              <client-only>
-                <file-pond
-                  ref="pond"
-                  @updatefiles="handleUpdateFiles"
-                  label-idle="Arrastra tus archivos o clickea para agregarlos"
-                  :allow-multiple="true"
-                />
-              </client-only>
-            </v-flex>
-
             <v-flex xs12>
               <v-text-field v-model="form.title" placeholder="Mi apunte" label="Titulo (*)"></v-text-field>
             </v-flex>
@@ -143,6 +145,22 @@
             </v-flex>
 
             <v-flex xs12>
+              <label
+                class="v-label v-label--active theme--light"
+                style="font-size: 14px;"
+              >Archivos (*)</label>
+
+              <client-only>
+                <file-pond
+                  ref="pond"
+                  @updatefiles="handleUpdateFiles"
+                  label-idle="Arrastra tus archivos o clickea para agregarlos"
+                  :allow-multiple="true"
+                />
+              </client-only>
+            </v-flex>
+
+            <v-flex xs12>
               <v-footer height="56px" app v-if="$vuetify.breakpoint.mdAndDown">
                 <v-container fill-height class="pa-0">
                   <v-layout align-center>
@@ -156,8 +174,9 @@
                       :loading="loading"
                       type="submit"
                       color="primary"
+                      rounded
                     >
-                      Crear
+                      <v-icon light>add</v-icon>Crear
                       <span slot="loader" class="custom-loader">
                         <v-icon light>cached</v-icon>
                       </span>
@@ -166,7 +185,7 @@
                 </v-container>
               </v-footer>
 
-              <v-card-actions v-else>
+              <!-- <v-card-actions v-else>
                 <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
                 <v-spacer></v-spacer>
 
@@ -175,14 +194,15 @@
                   depressed
                   type="submit"
                   color="primary"
+                  rounded
                   :loading="loading"
                 >
-                  Crear
+                  <v-icon light>add</v-icon>Crear
                   <span slot="loader" class="custom-loader">
                     <v-icon light>cached</v-icon>
                   </span>
                 </v-btn>
-              </v-card-actions>
+              </v-card-actions>-->
             </v-flex>
           </v-layout>
         </v-form>
@@ -299,8 +319,8 @@ export default {
       subjects: [],
 
       form: {
-        title: "",
-        description: "",
+        title: "asdasd",
+        description: "asdasd",
         institution: "",
         subject: "",
         codeNote: "",
@@ -310,6 +330,12 @@ export default {
       countFilesUploaded: -1,
       fileProgress: 0
     };
+  },
+
+  mounted() {
+    this.form.institution = this.institutions[0]._id;
+    this.form.codeNote = this.codeNotes[0]._id;
+    this.form.codeYear = this.codeYears[0]._id;
   },
 
   watch: {
