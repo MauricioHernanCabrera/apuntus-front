@@ -5,8 +5,8 @@ let API_URL = '';
 let FRONT_URL = '';
 
 if (process.env.NODE_ENV === 'production') {
-  API_URL = 'https://api.apuntus.com';
-  FRONT_URL = 'https://apuntus.com';
+  API_URL = 'https://apuntus-api.herokuapp.com/';
+  FRONT_URL = 'https://apuntus.herokuapp.com/';
 } else {
   API_URL = 'http://127.0.0.1:8000';
   FRONT_URL = 'http://localhost:3000';

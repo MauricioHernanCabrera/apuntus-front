@@ -28,10 +28,10 @@
     "vscode-icons-js": "^9.3.0",
     "vue-countup-v2": "^4.0.0",
     "vue-filepond": "^5.1.3",
-    "vuelidate": "^0.7.4"
-  },
-  "devDependencies": {
+    "vuelidate": "^0.7.4",
     "@nuxtjs/vuetify": "1.3.2",
     "nodemon": "^1.19.3"
+  },
+  "devDependencies": {
   }
 }
