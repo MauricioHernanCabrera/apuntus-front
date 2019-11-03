@@ -108,7 +108,7 @@ export default {
   watch: {
     pay(newValue) {
       if (newValue.length >= 0) {
-        window.open(newValue, "_blank");
+        window.location = newValue
       }
     }
   }

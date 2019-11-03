@@ -91,9 +91,9 @@ module.exports = {
         href:
           'https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css'
       }
-    ],
+    ]
 
-    script: [{ src: 'https://apis.google.com/js/api.js' }]
+    // script: [{ src: 'https://apis.google.com/js/api.js' }]
   },
   /*
    ** Customize the progress-bar color
@@ -102,18 +102,18 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/styles.css', 'animate.css', 'filepond/dist/filepond.min.css'],
+  css: ['@/assets/styles.css', 'animate.css', 'filepond/dist/filepond.min.css'],
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/vue-components',
-    '~/plugins/vuelidate',
-    '~/plugins/auth',
-    // { src: '~/plugins/ga', ssr: false }
+    '@/plugins/vue-components',
+    '@/plugins/vuelidate',
+    '@/plugins/auth',
+    { src: '@/plugins/ga', ssr: false },
     { src: '@/plugins/vue-filepond', ssr: false },
     { src: '@/plugins/scroll-reveal', ssr: false },
-    { src: '~/plugins/position', ssr: false }
+    { src: '@/plugins/position', ssr: false }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -153,7 +153,7 @@ module.exports = {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['@/assets/variables.scss'],
 
     theme: {
       themes: {
