@@ -28,7 +28,7 @@ async function start() {
   const PORT = process.env.PORT || 3000;
 
   const server = app.listen(PORT, function() {
-    debug(`Listening http://localhost:${server.address().port}`);
+    console.log(`Listening http://localhost:${server.address().port}`);
   });
 
   // consola.ready({
