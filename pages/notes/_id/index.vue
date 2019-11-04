@@ -6,6 +6,7 @@
       <v-flex xs12 v-if="isNewNote">
         <v-alert
           type="warning"
+          class="subtitle-2"
         >Este apunte es nuevo, es probable que todavia no se hayan terminado de subir todos los archivos. Esto puede demorarse de 15 a 30 minutos</v-alert>
       </v-flex>
 

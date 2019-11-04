@@ -1,9 +1,11 @@
 <template>
   <v-card flat v-if="files.length">
-    <v-list subheader class="pb-0">
-      <v-subheader>
-        {{ files.length }} Archivo(s)
+    <v-list class="pb-0" subheader>
+      <v-subheader class="d-flex flex-wrap">
+        <span>{{ files.length }} Archivo(s)</span>
+
         <v-spacer />
+
         <v-btn
           color="primary"
           small
@@ -13,15 +15,15 @@
       </v-subheader>
 
       <v-list-item v-for="item in files" :key="item.id" :href="item.webViewLink" target="_blank">
-        <v-list-item-avatar>
-          <img v-if="item.icon" :src="`/icons/${item.icon}`" alt="file" width="24" />
+        <v-list-item-avatar class="mr-2 my-0">
+          <v-img v-if="item.icon" :src="`/icons/${item.icon}`" alt="file" width="24px" />
         </v-list-item-avatar>
 
         <v-list-item-content>
           <v-list-item-title v-html="item.name"></v-list-item-title>
         </v-list-item-content>
 
-        <v-list-item-action>
+        <v-list-item-action v-if="!$vuetify.breakpoint.xs">
           <v-btn text small color="grey lighten-1" depressed>
             <span>abrir archivo</span>
           </v-btn>

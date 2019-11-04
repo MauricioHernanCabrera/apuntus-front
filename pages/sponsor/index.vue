@@ -2,17 +2,19 @@
   <v-container>
     <core-toolbar title="Apoya a apuntus"></core-toolbar>
 
-    <v-layout row wrap justify-center mx-0>
-      <v-flex xs12>
-        <p class="title font-weight-light">
+    <v-card>
+      <v-card-text>
+        <p class="subtitle-1 font-weight-light mb-0">
           Apuntus es un proyecto web de libre uso. Es y siempre será de uso gratuito.
           Las contribuciones de donantes, patrocinadores, y patrocinadores
           especiales permiten el desarrollo de nuevas funcionalidades.
-          Podes apoyar el proyecto convirtiendose en un patrocinador
+          Podes apoyar el proyecto convirtiendote en un patrocinador
         </p>
-      </v-flex>
+      </v-card-text>
 
-      <v-flex xs12>
+      <v-divider class="my-2"></v-divider>
+
+      <v-card-text class="pb-0">
         <v-select
           v-model="pay"
           :items="pays"
@@ -20,8 +22,8 @@
           placeholder="$50"
           outlined
         ></v-select>
-      </v-flex>
-    </v-layout>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -108,7 +110,7 @@ export default {
   watch: {
     pay(newValue) {
       if (newValue.length >= 0) {
-        window.location = newValue
+        window.location = newValue;
       }
     }
   }

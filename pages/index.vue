@@ -13,7 +13,7 @@
           v-model="filters.search"
           @blur="searchActive = false"
           hide-details
-          label="Search"
+          label="Buscar por titulo"
           append-icon="search"
           @click:append="searchNotes"
           @keyup.enter="searchNotes"
@@ -31,7 +31,7 @@
         @click="setDialog({
           title: 'Filtros',
           data: filters,
-          nameBtnSubmit: 'Aplicar filtros',
+          nameBtnSubmit: 'Filtrar',
           active: 'filter-notes'
         })"
       >
@@ -41,7 +41,7 @@
 
     <v-layout row wrap mx-0>
       <v-flex xs12>
-        <notes :notes="data.array" :loading="loading" @filter="filterNotes" />
+        <notes :notes="data.array" onlyLike :loading="loading" @filter="filterNotes" />
       </v-flex>
 
       <form-filter

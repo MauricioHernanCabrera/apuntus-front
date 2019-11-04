@@ -165,8 +165,6 @@
               <v-footer height="56px" app v-if="$vuetify.breakpoint.mdAndDown">
                 <v-container fill-height class="pa-0">
                   <v-layout align-center>
-                    <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
-
                     <v-spacer />
 
                     <v-btn

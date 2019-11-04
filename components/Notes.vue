@@ -4,6 +4,7 @@
     <template v-if="notes.length > 0">
       <v-flex xs12>
         <card-note
+          :onlyLike="onlyLike"
           v-for="item in notes"
           :key="item._id"
           :note="item"
@@ -47,6 +48,11 @@ export default {
     toolbarActionsActive: {
       type: Boolean,
       default: true
+    },
+
+    onlyLike: {
+      type: Boolean,
+      default: false
     }
   }
 };

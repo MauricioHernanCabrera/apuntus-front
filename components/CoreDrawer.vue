@@ -8,7 +8,7 @@
     rounded
     style="z-index: 20;"
   >
-    <v-list rounded>
+    <v-list rounded dense>
       <v-list-item three-line>
         <v-list-item-content>
           <v-list-item-title class="d-flex justify-center">
@@ -57,7 +57,6 @@
         outlined
         :exact="item.isExact"
         :to="item.to"
-        :style="item.name == 'Apoya a apuntus' && { border: '2px solid white' }"
       >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -70,15 +69,15 @@
     </v-list>
 
     <template v-slot:append>
+      <v-divider></v-divider>
       <div class="pa-2">
-        <v-btn v-if="isAuth" block @click="logout">Cerrar sesión</v-btn>
+        <v-btn small v-if="isAuth" block @click="logout">Cerrar sesión</v-btn>
 
         <div v-else class="text-center">
-          <v-btn text block class="white--text" to="/auth/register">
+          <v-btn small text block class="white--text" to="/auth/register">
             <span>Registrate</span>
           </v-btn>
-          <span class="white--text">o</span>
-          <v-btn block class="black--text white" to="/auth/login">
+          <v-btn small block class="black--text white" to="/auth/login">
             <span>Iniciar sesion</span>
           </v-btn>
         </div>

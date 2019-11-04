@@ -31,73 +31,81 @@
 
         <p class="mb-0">{{ note.description }}</p>
 
-        <v-layout align-center>
-          <div>
-            <v-chip :to="`/users/${note.owner.username}`">
-              <v-icon left class="hidden-xs-only">face</v-icon>
+        <v-layout align-center row wrap mx-0>
+          <v-flex>
+            <v-chip small :to="`/users/${note.owner.username}`">
+              <v-icon small left class="hidden-xs-only">face</v-icon>
               {{ note.owner.username }}
             </v-chip>
 
-            <v-chip color="accent" @click="$emit('filter', { codeNote: note.codeNote._id })">
-              <v-icon left class="hidden-xs-only">mdi-note-text</v-icon>
+            <v-chip small color="accent" @click="$emit('filter', { codeNote: note.codeNote._id })">
+              <v-icon small left class="hidden-xs-only">mdi-note-text</v-icon>
               {{ note.codeNote.name }}
             </v-chip>
 
             <v-chip
+              small
               :color="colorCodeYear(note.codeYear.name)"
               @click="$emit('filter', { codeYear: note.codeYear._id })"
             >
-              <v-icon left class="hidden-xs-only">mdi-timer</v-icon>
+              <v-icon small left class="hidden-xs-only">mdi-timer</v-icon>
               {{ note.codeYear.name }}
             </v-chip>
-          </div>
+          </v-flex>
 
-          <v-spacer />
+          <v-spacer></v-spacer>
 
-          <div class="d-flex align-start align-self-ce" v-if="toolbarActionsActive">
-            <btn-share :url="`${FRONT_URL}/jobs/${note._id}`" />
+          <v-flex v-if="toolbarActionsActive">
+            <div class="d-flex align-start justify-end">
+              <btn-share v-if="!onlyLike" :url="`${FRONT_URL}/notes/${note._id}`" />
 
-            <div class="d-flex justify-center align-center" style="flex-direction: column;">
-              <v-btn icon class="ma-0" v-if="note.isSaved" @click="toggleSaved">
-                <v-icon color="#707070">turned_in</v-icon>
-              </v-btn>
+              <div
+                v-if="!onlyLike"
+                class="d-flex justify-center align-center"
+                style="flex-direction: column;"
+              >
+                <v-btn icon class="ma-0" v-if="note.isSaved" @click="toggleSaved">
+                  <v-icon color="#707070">turned_in</v-icon>
+                </v-btn>
 
-              <v-btn icon class="ma-0" v-else @click="toggleSaved">
-                <v-icon color="#707070">turned_in_not</v-icon>
-              </v-btn>
-            </div>
+                <v-btn icon class="ma-0" v-else @click="toggleSaved">
+                  <v-icon color="#707070">turned_in_not</v-icon>
+                </v-btn>
+              </div>
 
-            <div
-              class="d-flex justify-center align-center"
-              style="flex-direction: column; position: relative;"
-            >
-              <transition
-                :enter-active-class="
+              <div
+                class="d-flex justify-center align-center"
+                style="flex-direction: column; position: relative;"
+              >
+                <transition
+                  :enter-active-class="
                   `animated ${
                     note.isFavorite ? 'rubberBand' : 'fadeIn'
                   } p-absolute`
                 "
-                :leave-active-class="
+                  :leave-active-class="
                   `animated ${note.isFavorite ? 'fadeOut' : 'zoomOut'}`
                 "
-              >
-                <v-btn
-                  v-if="note.isFavorite"
-                  icon
-                  class="ma-0"
-                  @click="toggleFavorite"
-                  key="favorite"
                 >
-                  <v-icon color="error">favorite</v-icon>
-                </v-btn>
+                  <v-btn
+                    v-if="note.isFavorite"
+                    icon
+                    class="ma-0"
+                    @click="toggleFavorite"
+                    key="favorite"
+                  >
+                    <v-icon color="error">favorite</v-icon>
+                  </v-btn>
 
-                <v-btn v-else icon class="ma-0" @click="toggleFavorite" key="not-favorite">
-                  <v-icon color="#707070">favorite_border</v-icon>
-                </v-btn>
-              </transition>
-              {{ note.countFavorites }}
+                  <v-btn v-else icon class="ma-0" @click="toggleFavorite" key="not-favorite">
+                    <v-icon color="#707070">favorite_border</v-icon>
+                  </v-btn>
+                </transition>
+                {{ note.countFavorites }}
+              </div>
             </div>
-          </div>
+          </v-flex>
+          <!-- <v-spacer /> -->
         </v-layout>
       </v-card-text>
     </v-card>
@@ -130,6 +138,11 @@ export default {
     hasHover: {
       type: Boolean,
       default: true
+    },
+
+    onlyLike: {
+      type: Boolean,
+      default: false
     }
   },
 

@@ -21,7 +21,7 @@ const page = {
     url: `${FRONT_URL}/images/safe_image.png`,
     alt: 'Image of Apuntus'
   },
-  favicon: `${FRONT_URL}/images/logo-apuntus-original.ico`
+  favicon: `${FRONT_URL}/images/apuntus-original.ico`
 };
 
 module.exports = {

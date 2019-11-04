@@ -2,7 +2,7 @@
   <nuxt-link to="/">
     <v-img
       class="my-2"
-      :src="original? '/images/logo-apuntus-original.png' : '/images/logo-apuntus-white.png'"
+      :src="original? '/images/apuntus-original.png' : '/images/apuntus-white.png'"
       :max-width="size"
     ></v-img>
   </nuxt-link>
