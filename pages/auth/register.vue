@@ -90,9 +90,9 @@ export default {
   data() {
     return {
       form: {
-        email: "holas6@gmail.com",
-        password: "123456789",
-        username: "holas6"
+        email: "",
+        password: "",
+        username: ""
       },
       showPassword: false
     };

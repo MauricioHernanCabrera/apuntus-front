@@ -299,8 +299,8 @@ export default {
       subjects: [],
 
       form: {
-        title: "asdasd",
-        description: "asdasd",
+        title: "",
+        description: "",
         institution: "",
         subject: "",
         codeNote: "",
@@ -310,12 +310,6 @@ export default {
       countFilesUploaded: -1,
       fileProgress: 0
     };
-  },
-
-  mounted() {
-    this.form.institution = this.institutions[0]._id;
-    this.form.codeNote = this.codeNotes[0]._id;
-    this.form.codeYear = this.codeYears[0]._id;
   },
 
   watch: {
