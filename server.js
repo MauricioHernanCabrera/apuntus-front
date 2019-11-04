@@ -25,10 +25,15 @@ async function start() {
   app.use(nuxt.render);
 
   // Listen the server
-  app.listen(port, host);
-  consola.ready({
-    message: `Server listening on http://${host}:${port}`,
-    badge: true
+  const PORT = process.env.PORT || 3000;
+
+  const server = app.listen(PORT, function() {
+    debug(`Listening http://localhost:${server.address().port}`);
   });
+
+  // consola.ready({
+  //   message: `Server listening on http://${host}:${port}`,
+  //   badge: true
+  // });
 }
 start();
