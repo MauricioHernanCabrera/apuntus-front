@@ -1,10 +1,10 @@
 <template>
-  <v-container>
+  <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
     <core-toolbar title="Apoya a apuntus"></core-toolbar>
 
     <v-card>
       <v-card-text>
-        <p class="subtitle-1 font-weight-light mb-0">
+        <p class="font-weight-light mb-0" :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1']">
           Apuntus es un proyecto web de libre uso. Es y siempre será de uso gratuito.
           Las contribuciones de donantes, patrocinadores, y patrocinadores
           especiales permiten el desarrollo de nuevas funcionalidades.
@@ -31,10 +31,10 @@
 import { mapState, mapActions } from "vuex";
 import CoreToolbar from "@/components/CoreToolbar";
 import { configMeta } from "@/helpers/seo";
-
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 export default {
   name: "Sponsor",
-
+  mixins: [hydratedVuetifyBreakpoints],
   components: { CoreToolbar },
 
   head() {

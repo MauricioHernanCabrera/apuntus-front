@@ -8,7 +8,8 @@
       <v-card-text>
         <h3
           style="display: flex;"
-          class="title font-weight-bold justify-space-between align-center"
+          class="font-weight-bold justify-space-between align-center"
+          :class="[breakpoint.xs? 'subtitle-1' : 'title']"
         >
           <span class="text-truncate">{{ note.title }}</span>
           <time class="caption grey--text">{{ note.createdAt | formatTimeAgo }}</time>
@@ -18,6 +19,8 @@
           <template v-slot:item="{ item }">
             <v-breadcrumbs-item
               style="color: rgba(0, 0, 0, 0.38); z-index: 10;"
+              class="subtitle-2"
+              :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1']"
               @click="$emit('filter', item.institution? {
                 institution: note.subject.institution._id
               } :
@@ -29,26 +32,30 @@
           </template>
         </v-breadcrumbs>
 
-        <p class="mb-0">{{ note.description }}</p>
+        <p :class="[breakpoint.xs? 'body-2' : 'body-1']" class="mb-0">{{ note.description }}</p>
 
         <v-layout align-center row wrap mx-0>
           <v-flex>
-            <v-chip small :to="`/users/${note.owner.username}`">
-              <v-icon small left class="hidden-xs-only">face</v-icon>
+            <v-chip :small="breakpoint.xs" :to="`/users/${note.owner.username}`">
+              <v-icon :small="breakpoint.xs" left class="hidden-xs-only">face</v-icon>
               {{ note.owner.username }}
             </v-chip>
 
-            <v-chip small color="accent" @click="$emit('filter', { codeNote: note.codeNote._id })">
-              <v-icon small left class="hidden-xs-only">mdi-note-text</v-icon>
+            <v-chip
+              :small="breakpoint.xs"
+              color="accent"
+              @click="$emit('filter', { codeNote: note.codeNote._id })"
+            >
+              <v-icon :small="breakpoint.xs" left class="hidden-xs-only">mdi-note-text</v-icon>
               {{ note.codeNote.name }}
             </v-chip>
 
             <v-chip
-              small
+              :small="breakpoint.xs"
               :color="colorCodeYear(note.codeYear.name)"
               @click="$emit('filter', { codeYear: note.codeYear._id })"
             >
-              <v-icon small left class="hidden-xs-only">mdi-timer</v-icon>
+              <v-icon :small="breakpoint.xs" left class="hidden-xs-only">mdi-timer</v-icon>
               {{ note.codeYear.name }}
             </v-chip>
           </v-flex>
@@ -75,17 +82,11 @@
 
               <div
                 class="d-flex justify-center align-center"
-                style="flex-direction: column; position: relative;"
+                style="flex-direction: row; position: relative;"
               >
                 <transition
-                  :enter-active-class="
-                  `animated ${
-                    note.isFavorite ? 'rubberBand' : 'fadeIn'
-                  } p-absolute`
-                "
-                  :leave-active-class="
-                  `animated ${note.isFavorite ? 'fadeOut' : 'zoomOut'}`
-                "
+                  :enter-active-class="`animated ${note.isFavorite ? 'rubberBand' : 'fadeIn'} p-absolute`"
+                  :leave-active-class="`animated ${note.isFavorite ? 'fadeOut' : 'zoomOut'}`"
                 >
                   <v-btn
                     v-if="note.isFavorite"
@@ -105,7 +106,6 @@
               </div>
             </div>
           </v-flex>
-          <!-- <v-spacer /> -->
         </v-layout>
       </v-card-text>
     </v-card>
@@ -115,12 +115,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 import BtnShare from "@/components/BtnShare";
 import moment from "moment";
 moment.locale("es");
 
 export default {
-  mixins: [sendRequest],
+  mixins: [sendRequest, hydratedVuetifyBreakpoints],
 
   components: { BtnShare },
 

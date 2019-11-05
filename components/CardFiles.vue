@@ -2,13 +2,13 @@
   <v-card flat v-if="files.length">
     <v-list class="pb-0" subheader>
       <v-subheader class="d-flex flex-wrap">
-        <span>{{ files.length }} Archivo(s)</span>
+        <span :class="[breakpoint.xs? 'body-2' : 'body-1']">{{ files.length }} Archivo(s)</span>
 
         <v-spacer />
 
         <v-btn
           color="primary"
-          small
+          :small="breakpoint.xs"
           :href="`https://drive.google.com/drive/u/0/folders/${note.googleFolderId}`"
           target="_blank"
         >Abrir carpeta</v-btn>
@@ -20,10 +20,10 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title v-html="item.name"></v-list-item-title>
+          <v-list-item-title :class="[breakpoint.xs? 'body-2' : 'body-1']" v-html="item.name"></v-list-item-title>
         </v-list-item-content>
 
-        <v-list-item-action v-if="!$vuetify.breakpoint.xs">
+        <v-list-item-action v-if="!breakpoint.xs">
           <v-btn text small color="grey lighten-1" depressed>
             <span>abrir archivo</span>
           </v-btn>
@@ -40,14 +40,19 @@
   </v-card>
 
   <v-card flat v-else>
-    <v-card-text class="text-center">
-      <span>No hay archivos cargados</span>
+    <v-card-text class="text-center py-2">
+      <span
+        :class="[breakpoint.xs? 'caption' : 'subtitle-2 font-weight-regular']"
+      >No hay archivos cargados</span>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
+
 export default {
+  mixins: [hydratedVuetifyBreakpoints],
   props: {
     files: {
       type: Array,

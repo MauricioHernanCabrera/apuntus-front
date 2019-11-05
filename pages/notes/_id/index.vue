@@ -1,20 +1,20 @@
 <template>
-  <v-container v-if="Object.keys(note).length > 0">
+  <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']" v-if="Object.keys(note).length > 0">
     <core-toolbar :title="`Apunte de ${note && note.owner? note.owner.username : ''}`"></core-toolbar>
 
     <v-layout row wrap mx-0>
       <v-flex xs12 v-if="isNewNote">
         <v-alert
           type="warning"
-          class="subtitle-2"
-        >Este apunte es nuevo, es probable que todavia no se hayan terminado de subir todos los archivos. Esto puede demorarse de 15 a 30 minutos</v-alert>
+          :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1', breakpoint.mdAndUp? 'mb-4' : 'mb-0']"
+        >Este apunte es nuevo, es probable que todavia no se haya terminado de subir todos los archivos. Esto puede demorarse de 15 a 30 minutos</v-alert>
       </v-flex>
 
       <v-flex xs12>
         <card-note :note="note" :hasHover="false"></card-note>
       </v-flex>
 
-      <v-flex xs12>
+      <v-flex xs12 v-if="!isNewNote">
         <card-files :files="files" :loading="loading" :note="note" />
       </v-flex>
     </v-layout>
@@ -24,6 +24,7 @@
 <script>
 import sendRequest from "@/mixins/sendRequest";
 import handleForm from "@/mixins/handleForm";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 import { mapActions, mapState } from "vuex";
 import { getIconForFile } from "vscode-icons-js";
 import CardFiles from "@/components/CardFiles";
@@ -34,7 +35,7 @@ import moment from "moment";
 moment.locale("es");
 
 export default {
-  mixins: [sendRequest, handleForm],
+  mixins: [sendRequest, handleForm, hydratedVuetifyBreakpoints],
 
   components: { CardFiles, CoreToolbar, CardNote },
 

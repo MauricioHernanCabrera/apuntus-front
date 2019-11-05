@@ -4,7 +4,9 @@ export const state = () => ({
     y: 0
   },
 
-  drawer: null
+  drawer: null,
+
+  firstLoad: false
 });
 
 export const mutations = {
@@ -14,6 +16,10 @@ export const mutations = {
 
   SET_DRAWER(state, drawer) {
     state.drawer = drawer;
+  },
+
+  SET_FIRST_LOAD(state, firstLoad) {
+    state.firstLoad = firstLoad;
   }
 };
 

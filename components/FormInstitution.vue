@@ -5,7 +5,7 @@
     :nameBtnSubmit="nameBtnSubmit"
     :title="title"
     :active="active"
-    :fullscreen="$vuetify.breakpoint.xs"
+    :fullscreen="breakpoint.xs"
     @submit-form="submitForm"
     @cancel-form="$emit('cancel-form')"
   >
@@ -26,8 +26,9 @@
 <script>
 import baseForm from "@/mixins/baseForm";
 import { required } from "vuelidate/lib/validators";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 export default {
-  mixins: [baseForm],
+  mixins: [baseForm, hydratedVuetifyBreakpoints],
   validations: {
     form: {
       name: { required }

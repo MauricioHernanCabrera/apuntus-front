@@ -5,7 +5,7 @@
     :nameBtnSubmit="nameBtnSubmit"
     :title="title"
     :active="active"
-    :fullscreen="$vuetify.breakpoint.xs"
+    :fullscreen="breakpoint.xs"
     @submit-form="submitForm"
     @cancel-form="$emit('cancel-form')"
   >
@@ -81,9 +81,10 @@ import baseForm from "@/mixins/baseForm";
 import { filterAutocomplete } from "@/helpers/removeAccent";
 import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
 export default {
-  mixins: [baseForm],
+  mixins: [baseForm, hydratedVuetifyBreakpoints],
   validations: {
     form: {}
   },

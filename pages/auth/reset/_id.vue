@@ -6,8 +6,12 @@
           <logo original size="64" />
         </div>
       </v-card-text>
+
       <v-card-text v-if="user" class="py-0">
-        <h1 class="font-weight-regular my-3 text-center">Recupera tu contraseña</h1>
+        <h1
+          class="font-weight-regular my-3 text-center"
+          :class="[breakpoint.xs? 'subtitle-1' : 'title']"
+        >Recupera tu contraseña</h1>
 
         <v-text-field
           :value="user.email"
@@ -38,6 +42,7 @@
           type="submit"
           depressed
           block
+          :small="breakpoint.xs"
           color="primary"
         >
           Recuperar contraseña
@@ -48,7 +53,12 @@
       </v-card-actions>
 
       <v-card-actions v-else>
-        <v-btn to="/auth/reset" color="primary">volver a recuperar mi contraseña</v-btn>
+        <v-btn
+          to="/auth/reset"
+          color="primary"
+          block
+          :small="breakpoint.xs"
+        >volver a recuperar mi contraseña</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>
@@ -59,9 +69,10 @@ import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
 import { configMeta } from "@/helpers/seo";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
 export default {
-  mixins: [sendRequest],
+  mixins: [sendRequest, hydratedVuetifyBreakpoints],
   middleware: "isAuth",
   layout: "auth",
 

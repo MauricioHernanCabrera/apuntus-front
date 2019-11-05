@@ -6,7 +6,10 @@
           <logo original size="64" />
         </div>
 
-        <h1 class="font-weight-regular my-3 text-center">Recupera acceso a tu cuenta</h1>
+        <h1
+          class="font-weight-regular my-3 text-center"
+          :class="[breakpoint.xs? 'subtitle-1' : 'title']"
+        >Recupera acceso a tu cuenta</h1>
 
         <v-text-field
           v-model="form.email"
@@ -25,6 +28,7 @@
           :loading="loading"
           type="submit"
           block
+          :small="breakpoint.xs"
           depressed
           color="primary"
         >
@@ -43,9 +47,10 @@ import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
 import { configMeta } from "@/helpers/seo";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
 export default {
-  mixins: [sendRequest],
+  mixins: [sendRequest, hydratedVuetifyBreakpoints],
   middleware: "isAuth",
   layout: "auth",
 

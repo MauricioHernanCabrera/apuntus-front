@@ -110,6 +110,7 @@ module.exports = {
     '@/plugins/vue-components',
     '@/plugins/vuelidate',
     '@/plugins/auth',
+    // '@/plugins/fix-vuetify-breakpoints',
     { src: '@/plugins/ga', ssr: false },
     { src: '@/plugins/vue-filepond', ssr: false },
     { src: '@/plugins/scroll-reveal', ssr: false },

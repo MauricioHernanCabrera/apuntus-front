@@ -1,9 +1,9 @@
 <template>
   <v-layout mx-0 row wrap>
-    <!-- <pre>{{ notes }}</pre> -->
     <template v-if="notes.length > 0">
       <v-flex xs12>
         <card-note
+          :hasHover="!breakpoint.xs"
           :onlyLike="onlyLike"
           v-for="item in notes"
           :key="item._id"
@@ -30,8 +30,10 @@
 
 <script>
 import CardNote from "@/components/CardNote";
-
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 export default {
+  mixins: [hydratedVuetifyBreakpoints],
+
   components: { CardNote },
 
   props: {

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
     <core-toolbar :title="`${data.total} apunte(s)`">
       <v-spacer></v-spacer>
 
@@ -65,11 +65,11 @@ import CoreToolbar from "@/components/CoreToolbar";
 import FormFilter from "@/components/FormFilter";
 import Notes from "@/components/Notes";
 import { configMeta } from "@/helpers/seo";
-
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 export default {
   name: "Home",
 
-  mixins: [sendRequest, handleForm],
+  mixins: [sendRequest, handleForm, hydratedVuetifyBreakpoints],
 
   components: { CoreToolbar, FormFilter, Notes },
 
@@ -157,7 +157,7 @@ export default {
   watch: {
     async "position.y"(newValue) {
       if (!this.filters.page) return;
-      const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
+      const fullHeight = newValue + this.breakpoint.height * 2;
 
       if (!(fullHeight >= document.body.clientHeight)) return;
       this.sendRequest(async () => {

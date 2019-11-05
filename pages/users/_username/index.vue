@@ -1,16 +1,17 @@
 <template>
-  <v-container>
+  <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
     <core-toolbar :title="isMyProfile? 'Mi perfil' : `Perfil de ${user.username}`">
       <template v-slot:extension-2>
         <v-tabs v-model="tabSelected" centered slider-color="yellow" background-color="transparent">
           <v-tab
             v-for="item in tabs"
             :key="item.name"
+            :class="breakpoint.xs? 'caption' : 'subtitle-2'"
             :href="`#${item.value}`"
             @click="$router.push(`/users/${user.username}?noteName=${item.value}`)"
           >
-            <v-icon class="mr-2">{{ item.icon }}</v-icon>
-            {{ item.name }}
+            <v-icon :small="breakpoint.xs" class="mr-2">{{ item.icon }}</v-icon>
+            <span>{{ item.name }}</span>
           </v-tab>
         </v-tabs>
       </template>
@@ -34,9 +35,10 @@ import sendRequest from "@/mixins/sendRequest";
 import CoreToolbar from "@/components/CoreToolbar";
 import Notes from "@/components/Notes";
 import { configMeta } from "@/helpers/seo";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
 export default {
-  mixins: [sendRequest],
+  mixins: [sendRequest, hydratedVuetifyBreakpoints],
 
   components: { CoreToolbar, Notes },
 
@@ -126,7 +128,7 @@ export default {
     async "position.y"(newValue) {
       if (!this.filters.page) return;
 
-      const fullHeight = newValue + this.$vuetify.breakpoint.height * 2;
+      const fullHeight = newValue + this.breakpoint.height * 2;
       if (!(fullHeight >= document.body.clientHeight)) return;
 
       this.sendRequest(async () => {

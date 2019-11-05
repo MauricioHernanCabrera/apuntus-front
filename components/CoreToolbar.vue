@@ -5,7 +5,7 @@
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
 
-    <v-toolbar-title v-if="title.length > 0">{{ title }}</v-toolbar-title>
+    <v-toolbar-title v-if="title.length > 0" :class="{ 'subtitle-1': breakpoint.xs }">{{ title }}</v-toolbar-title>
     <slot />
 
     <template v-slot:extension v-if="$route.name === 'users-username'">
@@ -16,8 +16,10 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
 export default {
+  mixins: [hydratedVuetifyBreakpoints],
   props: {
     title: {
       type: String,

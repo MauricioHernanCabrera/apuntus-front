@@ -1,8 +1,8 @@
 <template>
   <core-app>
     <v-content>
-      <v-container fluid fill-height :pa-0="!$vuetify.breakpoint.smAndUp">
-        <v-layout :align-center="$vuetify.breakpoint.smAndUp" justify-center>
+      <v-container fluid fill-height :pa-0="!breakpoint.smAndUp">
+        <v-layout :align-center="breakpoint.smAndUp" justify-center>
           <nuxt />
         </v-layout>
       </v-container>
@@ -12,7 +12,9 @@
 
 <script>
 import CoreApp from "@/components/CoreApp";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 export default {
+  mixins: [hydratedVuetifyBreakpoints],
   components: { CoreApp }
 };
 </script>

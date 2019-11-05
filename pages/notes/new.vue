@@ -11,7 +11,7 @@
         rounded
         outlined
         :loading="loading"
-        v-if="!$vuetify.breakpoint.mdAndDown"
+        v-if="!breakpoint.mdAndDown"
       >
         <v-icon light>add</v-icon>Crear
         <span slot="loader" class="custom-loader">
@@ -25,27 +25,22 @@
         <v-form @submit.prevent="createNote">
           <v-layout row wrap mx-0>
             <v-flex xs12>
-              <v-text-field v-model="form.title" placeholder="Mi apunte" label="Titulo (*)"></v-text-field>
+              <v-text-field v-model="form.title" placeholder="End Game" label="Titulo (*)"></v-text-field>
             </v-flex>
 
             <v-flex xs12>
-              <v-textarea
-                v-model="form.description"
-                placeholder="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est aspernatur, quasi accusamus libero excepturi porro similique doloremque, assumenda consequuntur rerum ipsum architecto nulla, quo earum deleniti itaque eveniet delectus molestiae?"
-                label="Descripción"
-              ></v-textarea>
+              <v-textarea v-model="form.description" placeholder="Soy ironman" label="Descripción"></v-textarea>
             </v-flex>
 
             <v-flex xs12 md6>
               <v-autocomplete
                 v-model="form.institution"
                 label="Institución (*)"
-                autofocus
                 placeholder="UNNE"
                 :filter="(item, queryText) => filterAutocomplete(item, queryText, 'nameSort')"
                 :items="institutions"
                 :readonly="!!form.institution"
-                :append-icon="form.institution? 'mdi-close' : 'mdi-menu-down'"
+                :append-icon="form.institution? 'mdi-close' : ''"
                 item-text="name"
                 no-data-text="No hay institución para seleccionar"
                 item-value="_id"
@@ -65,11 +60,12 @@
                     active: 'create-institution'
                   })"
                 >
-                  <v-card-text class="py-2">
-                    <span class="subheading d-inline-block">¿No encontraste tu institución?</span>
-                    <span
-                      class="subheading py-1 d-inline-block white--text"
-                    >¡Click aca para agregarla!</span>
+                  <v-card-text
+                    class="pa-1 text-center"
+                    :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1']"
+                  >
+                    <span class="d-inline-block">¿No encontraste tu institución?</span>
+                    <span class="py-1 d-inline-block white--text">¡Click aca para agregarla!</span>
                   </v-card-text>
                 </v-card>
               </v-autocomplete>
@@ -88,7 +84,7 @@
                   placeholder="Algoritmo y Estructuras de Datos I"
                   :items="subjects"
                   :readonly="!!form.subject"
-                  :append-icon="form.subject? 'mdi-close' : 'mdi-menu-down'"
+                  :append-icon="form.subject? 'mdi-close' : ''"
                   @click:append="() => {
                     form.subject = null
                   }"
@@ -104,11 +100,12 @@
                       active: 'create-subject'
                     })"
                   >
-                    <v-card-text class="py-2">
-                      <span class="subheading d-inline-block">¿No encontraste tu materia?</span>
-                      <span
-                        class="subheading py-1 d-inline-block white--text"
-                      >¡Click aca para agregarla!</span>
+                    <v-card-text
+                      class="pa-1 text-center"
+                      :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1']"
+                    >
+                      <span class="d-inline-block">¿No encontraste tu materia?</span>
+                      <span class="py-1 d-inline-block white--text">¡Click aca para agregarla!</span>
                     </v-card-text>
                   </v-card>
                 </v-autocomplete>
@@ -125,7 +122,7 @@
                 item-value="_id"
                 :items="codeNotes"
                 :readonly="!!form.codeNote"
-                :append-icon="form.codeNote? 'mdi-close' : 'mdi-menu-down'"
+                :append-icon="form.codeNote? 'mdi-close' : ''"
                 @click:append="form.codeNote = null"
               ></v-autocomplete>
             </v-flex>
@@ -140,7 +137,7 @@
                 item-value="_id"
                 :items="codeYears"
                 :readonly="!!form.codeYear"
-                :append-icon="form.codeYear? 'mdi-close' : 'mdi-menu-down'"
+                :append-icon="form.codeYear? 'mdi-close' : ''"
                 @click:append="form.codeYear = null"
               ></v-autocomplete>
             </v-flex>
@@ -162,7 +159,7 @@
             </v-flex>
 
             <v-flex xs12>
-              <v-footer height="56px" app v-if="$vuetify.breakpoint.mdAndDown">
+              <v-footer height="56px" app v-if="breakpoint.mdAndDown">
                 <v-container fill-height class="pa-0">
                   <v-layout align-center>
                     <v-spacer />
@@ -237,9 +234,15 @@ import CoreToolbar from "@/components/CoreToolbar";
 import FormSubject from "@/components/FormSubject";
 import FormInstitution from "@/components/FormInstitution";
 import { configMeta } from "@/helpers/seo";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
 export default {
-  mixins: [deleteAutocompleteInput, sendRequest, handleForm],
+  mixins: [
+    deleteAutocompleteInput,
+    sendRequest,
+    handleForm,
+    hydratedVuetifyBreakpoints
+  ],
 
   middleware: "isNotAuth",
 

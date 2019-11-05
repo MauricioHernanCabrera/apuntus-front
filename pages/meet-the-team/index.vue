@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height>
+  <v-container fill-height :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
     <core-toolbar title="Conoce al equipo"></core-toolbar>
 
     <v-layout row wrap mx-0 justify-center align-center>
@@ -44,10 +44,10 @@
 import { mapState, mapActions } from "vuex";
 import CoreToolbar from "@/components/CoreToolbar";
 import { configMeta } from "@/helpers/seo";
-
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 export default {
   name: "Home",
-
+  mixins: [hydratedVuetifyBreakpoints],
   components: { CoreToolbar },
 
   head() {

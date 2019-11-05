@@ -6,7 +6,10 @@
           <logo original size="64" />
         </div>
 
-        <h1 class="font-weight-regular my-3 text-center">Inicia sesión con tu username</h1>
+        <h1
+          class="font-weight-regular my-3 text-center"
+          :class="[breakpoint.xs? 'subtitle-1' : 'title']"
+        >Inicia sesión con tu username</h1>
 
         <v-text-field
           v-model="form.username"
@@ -39,7 +42,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn text to="/auth/register">registrate</v-btn>
+        <v-btn :small="breakpoint.xs" text to="/auth/register">registrate</v-btn>
 
         <v-spacer></v-spacer>
 
@@ -48,6 +51,7 @@
           :loading="loading"
           type="submit"
           depressed
+          :small="breakpoint.xs"
           color="primary"
         >
           Iniciar sesión
@@ -65,9 +69,10 @@ import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
 import { configMeta } from "@/helpers/seo";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
 export default {
-  mixins: [sendRequest],
+  mixins: [sendRequest, hydratedVuetifyBreakpoints],
   middleware: "isAuth",
   layout: "auth",
 
