@@ -15,7 +15,7 @@
             <logo />
           </v-list-item-title>
           <v-list-item-subtitle
-            class="text-center"
+            class="text-center caption font-weight-regular"
           >Encontra los mejores apuntes compartido por estudiantes</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>

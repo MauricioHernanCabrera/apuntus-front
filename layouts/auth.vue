@@ -2,7 +2,7 @@
   <core-app>
     <v-content>
       <v-container fluid fill-height :pa-0="!breakpoint.smAndUp">
-        <v-layout :align-center="breakpoint.smAndUp" justify-center>
+        <v-layout :align-center="breakpoint.smAndUp" justify-center style="width: 100%;">
           <nuxt />
         </v-layout>
       </v-container>

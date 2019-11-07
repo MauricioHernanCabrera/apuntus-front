@@ -1,8 +1,10 @@
 <template>
   <div class="container-card-note">
     <v-card flat class="card-note" :class="[hasHover && 'card-note-hover']">
-      <nuxt-link
+      <v-card
         :to="`/notes/${note._id}`"
+        class="elevation-0"
+        color="transparent"
         style="position: absolute; height: 100%; width: 100%; top: 0; left: 0;"
       />
       <v-card-text>
@@ -103,6 +105,7 @@
           </v-flex>
         </v-layout>
       </v-card-text>
+      <v-divider></v-divider>
     </v-card>
   </div>
 </template>
@@ -246,20 +249,20 @@ export default {
   left: 0;
 }
 
-.container-card-note {
-  .card-note {
-    transition: 0.15s;
-    border: 1px solid transparent;
-    border-bottom: 1px solid #dcdcdc;
+// .container-card-note {
+//   .card-note {
+//     transition: 0.15s;
+//     border: 1px solid transparent;
+//     border-bottom: 1px solid #dcdcdc;
 
-    &-hover {
-      &:hover {
-        border-top-color: #dcdcdc;
-        border-bottom-color: transparent;
-        box-shadow: 0px 7.5px #dcdcdc;
-        transform: translate(0px, -7.5px);
-      }
-    }
-  }
-}
+//     &-hover {
+//       &:hover {
+//         border-top-color: #dcdcdc;
+//         border-bottom-color: transparent;
+//         box-shadow: 0px 7.5px #dcdcdc;
+//         transform: translate(0px, -7.5px);
+//       }
+//     }
+//   }
+// }
 </style>

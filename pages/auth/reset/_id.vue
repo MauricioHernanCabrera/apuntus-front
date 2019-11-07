@@ -1,67 +1,55 @@
 <template>
-  <v-form @submit.prevent="sendRequest(postResetPasswordAndReport)">
-    <v-card text max-width="350px">
-      <v-card-text>
-        <div class="my-5 d-flex justify-center">
-          <logo original size="64" />
-        </div>
-      </v-card-text>
+  <card-auth
+    :title="user? 'Recupera tu contraseña' : 'El token para recuperar tu contraseña expiro'"
+    @submit="sendRequest(postResetPasswordAndReport)"
+  >
+    <template v-if="user">
+      <v-text-field
+        :value="user.email"
+        disabled
+        prepend-icon="mdi-email-outline"
+        label="Email"
+        name="email"
+        type="text"
+      ></v-text-field>
 
-      <v-card-text v-if="user" class="py-0">
-        <h1
-          class="font-weight-regular my-3 text-center"
-          :class="[breakpoint.xs? 'subtitle-1' : 'title']"
-        >Recupera tu contraseña</h1>
+      <v-text-field
+        v-model="form.password"
+        prepend-icon="mdi-key-outline"
+        :append-icon="!showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+        :type="showPassword ? 'text' : 'password'"
+        name="password"
+        label="Nueva contraseña"
+        @click:append="showPassword = !showPassword"
+      ></v-text-field>
+    </template>
 
-        <v-text-field
-          :value="user.email"
-          disabled
-          prepend-icon="mdi-email-outline"
-          label="Email"
-          name="email"
-          type="text"
-        ></v-text-field>
+    <template slot="actions" v-if="user">
+      <v-btn
+        :disabled="$v.$invalid || loading"
+        :loading="loading"
+        type="submit"
+        depressed
+        block
+        :small="breakpoint.xs"
+        color="primary"
+      >
+        Recuperar contraseña
+        <span slot="loader" class="custom-loader">
+          <v-icon light>cached</v-icon>
+        </span>
+      </v-btn>
+    </template>
 
-        <v-text-field
-          v-model="form.password"
-          prepend-icon="mdi-key-outline"
-          :append-icon="!showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-          :type="showPassword ? 'text' : 'password'"
-          name="password"
-          label="Nueva contraseña"
-          @click:append="showPassword = !showPassword"
-        ></v-text-field>
-      </v-card-text>
-
-      <v-card-text v-else>El token para recuperar tu contraseña expiro</v-card-text>
-
-      <v-card-actions v-if="user">
-        <v-btn
-          :disabled="$v.$invalid || loading"
-          :loading="loading"
-          type="submit"
-          depressed
-          block
-          :small="breakpoint.xs"
-          color="primary"
-        >
-          Recuperar contraseña
-          <span slot="loader" class="custom-loader">
-            <v-icon light>cached</v-icon>
-          </span>
-        </v-btn>
-      </v-card-actions>
-
-      <v-card-actions v-else>
-        <v-btn
-          to="/auth/reset"
-          color="primary"
-          block
-          :small="breakpoint.xs"
-        >volver a recuperar mi contraseña</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-form>
+    <template slot="actions">
+      <v-btn
+        to="/auth/reset"
+        color="primary"
+        block
+        :small="breakpoint.xs"
+      >volver a recuperar mi contraseña</v-btn>
+    </template>
+  </card-auth>
 </template>
 
 <script>
@@ -70,12 +58,13 @@ import { mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
 import { configMeta } from "@/helpers/seo";
 import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
+import CardAuth from "@/components/CardAuth";
 
 export default {
   mixins: [sendRequest, hydratedVuetifyBreakpoints],
   middleware: "isAuth",
   layout: "auth",
-
+  components: { CardAuth },
   validations: {
     form: {
       password: { required }

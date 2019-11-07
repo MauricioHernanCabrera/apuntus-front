@@ -1,73 +1,61 @@
 <template>
-  <v-form @submit.prevent="sendRequest(loginAndReport)">
-    <v-card text max-width="350px">
-      <v-card-text>
-        <div class="my-5 d-flex justify-center">
-          <logo original size="64" />
-        </div>
+  <card-auth title="Inicia sesión con tu usuario" @submit="sendRequest(loginAndReport)">
+    <v-text-field
+      v-model="form.username"
+      prepend-icon="mdi-face"
+      label="Nombre de usuario"
+      name="username"
+      type="text"
+    ></v-text-field>
 
-        <h1
-          class="font-weight-regular my-3 text-center"
-          :class="[breakpoint.xs? 'subtitle-1' : 'title']"
-        >Inicia sesión con tu username</h1>
+    <v-text-field
+      v-model="form.password"
+      prepend-icon="mdi-key-outline"
+      :append-icon="!showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+      :type="showPassword ? 'text' : 'password'"
+      name="password"
+      label="Contraseña"
+      @click:append="showPassword = !showPassword"
+    ></v-text-field>
 
-        <v-text-field
-          v-model="form.username"
-          prepend-icon="mdi-face"
-          label="Nombre de usuario"
-          name="username"
-          type="text"
-        ></v-text-field>
+    <v-layout>
+      <v-spacer></v-spacer>
+      <v-btn
+        color="grey"
+        text
+        small
+        class="subtitle-1 text-lowercase"
+        to="/auth/reset"
+      >¿Olvidaste tu contraseña?</v-btn>
+    </v-layout>
 
-        <v-text-field
-          v-model="form.password"
-          prepend-icon="mdi-key-outline"
-          :append-icon="!showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-          :type="showPassword ? 'text' : 'password'"
-          name="password"
-          label="Contraseña"
-          @click:append="showPassword = !showPassword"
-        ></v-text-field>
+    <template slot="actions">
+      <v-btn :small="breakpoint.xs" text to="/auth/register">registrate</v-btn>
 
-        <v-layout>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="grey"
-            text
-            small
-            class="subtitle-1 text-lowercase"
-            to="/auth/reset"
-          >¿Olvidaste tu contraseña?</v-btn>
-        </v-layout>
-      </v-card-text>
+      <v-spacer></v-spacer>
 
-      <v-card-actions>
-        <v-btn :small="breakpoint.xs" text to="/auth/register">registrate</v-btn>
-
-        <v-spacer></v-spacer>
-
-        <v-btn
-          :disabled="$v.$invalid || loading"
-          :loading="loading"
-          type="submit"
-          depressed
-          :small="breakpoint.xs"
-          color="primary"
-        >
-          Iniciar sesión
-          <span slot="loader" class="custom-loader">
-            <v-icon light>cached</v-icon>
-          </span>
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-form>
+      <v-btn
+        :disabled="$v.$invalid || loading"
+        :loading="loading"
+        type="submit"
+        depressed
+        :small="breakpoint.xs"
+        color="primary"
+      >
+        Iniciar sesión
+        <span slot="loader" class="custom-loader">
+          <v-icon light>cached</v-icon>
+        </span>
+      </v-btn>
+    </template>
+  </card-auth>
 </template>
 
 <script>
 import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 import sendRequest from "@/mixins/sendRequest";
+import CardAuth from "@/components/CardAuth";
 import { configMeta } from "@/helpers/seo";
 import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 
@@ -75,6 +63,9 @@ export default {
   mixins: [sendRequest, hydratedVuetifyBreakpoints],
   middleware: "isAuth",
   layout: "auth",
+  components: {
+    CardAuth
+  },
 
   validations: {
     form: {
