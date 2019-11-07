@@ -9,7 +9,7 @@
         <h3
           style="display: flex;"
           class="font-weight-bold justify-space-between align-center"
-          :class="[breakpoint.xs? 'subtitle-1' : 'title']"
+          :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1']"
         >
           <span class="text-truncate">{{ note.title }}</span>
           <time class="caption grey--text">{{ note.createdAt | formatTimeAgo }}</time>
@@ -18,9 +18,8 @@
         <v-breadcrumbs class="pa-0" :items="breadCrumbs(note)" divider="/">
           <template v-slot:item="{ item }">
             <v-breadcrumbs-item
-              style="color: rgba(0, 0, 0, 0.38); z-index: 10;"
-              class="subtitle-2"
-              :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1']"
+              style="color: rgba(0, 0, 0, 0.38); z-index: 2;"
+              :class="[breakpoint.xs? 'caption' : 'body-2']"
               @click="$emit('filter', item.institution? {
                 institution: note.subject.institution._id
               } :
@@ -32,30 +31,26 @@
           </template>
         </v-breadcrumbs>
 
-        <p :class="[breakpoint.xs? 'body-2' : 'body-1']" class="mb-0">{{ note.description }}</p>
+        <p class="mb-1" :class="[breakpoint.xs? 'caption' : 'body-2']">{{ note.description }}</p>
 
         <v-layout align-center row wrap mx-0>
           <v-flex>
-            <v-chip :small="breakpoint.xs" :to="`/users/${note.owner.username}`">
-              <v-icon :small="breakpoint.xs" left class="hidden-xs-only">face</v-icon>
+            <v-chip small :to="`/users/${note.owner.username}`">
+              <v-icon small left class="hidden-xs-only">face</v-icon>
               {{ note.owner.username }}
             </v-chip>
 
-            <v-chip
-              :small="breakpoint.xs"
-              color="accent"
-              @click="$emit('filter', { codeNote: note.codeNote._id })"
-            >
-              <v-icon :small="breakpoint.xs" left class="hidden-xs-only">mdi-note-text</v-icon>
+            <v-chip small color="accent" @click="$emit('filter', { codeNote: note.codeNote._id })">
+              <v-icon small left class="hidden-xs-only">mdi-note-text</v-icon>
               {{ note.codeNote.name }}
             </v-chip>
 
             <v-chip
-              :small="breakpoint.xs"
+              small
               :color="colorCodeYear(note.codeYear.name)"
               @click="$emit('filter', { codeYear: note.codeYear._id })"
             >
-              <v-icon :small="breakpoint.xs" left class="hidden-xs-only">mdi-timer</v-icon>
+              <v-icon small left class="hidden-xs-only">mdi-timer</v-icon>
               {{ note.codeYear.name }}
             </v-chip>
           </v-flex>

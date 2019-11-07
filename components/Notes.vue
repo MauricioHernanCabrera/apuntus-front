@@ -14,7 +14,7 @@
       </v-flex>
 
       <v-flex xs12 text-center my-5 v-if="loading">
-        <v-progress-circular color="accent" indeterminate size="64"></v-progress-circular>
+        <v-progress-circular color="accent" indeterminate size="32"></v-progress-circular>
       </v-flex>
     </template>
 

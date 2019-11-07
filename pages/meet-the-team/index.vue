@@ -1,40 +1,24 @@
 <template>
-  <v-container fill-height :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
+  <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']" grid-list-lg>
     <core-toolbar title="Conoce al equipo"></core-toolbar>
 
     <v-layout row wrap mx-0 justify-center align-center>
-      <v-flex xs12 md6>
-        <v-layout row wrap justify-space-around align-center>
-          <v-flex v-for="item in members" :key="item.fullName" xs12 sm6 md3>
-            <a
-              class="d-block text-center black--text"
-              :href="item.website"
-              target="_blank"
-              style="text-decoration: none;"
-            >
-              <v-avatar width="164px" height="164px" class="elevation-12" style="overflow: hidden;">
-                <v-hover v-slot:default="{ hover }">
-                  <v-img aspect-ratio="1" :src="item.photo">
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex flex-column transition-fast-in-fast-out secondary v-card--reveal title font-weight-bold white--text"
-                        style="height: 100%;"
-                      >
-                        <p>{{ item.position }}</p>
-                        <v-btn color="transparent" icon target="_blank">
-                          <v-icon color="white" large>mdi-link</v-icon>
-                        </v-btn>
-                      </div>
-                    </v-expand-transition>
-                  </v-img>
-                </v-hover>
-              </v-avatar>
+      <v-flex v-for="item in members" :key="item.fullName" xs12 sm6>
+        <v-card
+          class="elevation-0 ma-0 text-center"
+          :href="item.website"
+          target="_blank"
+          style="text-decoration: none;"
+        >
+          <v-card-text class="d-flex justify-center">
+            <v-avatar width="164px" height="164px" class="elevation-12" style="overflow: hidden;">
+              <v-img aspect-ratio="1" :src="item.photo" />
+            </v-avatar>
+          </v-card-text>
 
-              <p class="subtitle mt-2">{{ item.fullName }}</p>
-            </a>
-          </v-flex>
-        </v-layout>
+          <p class="subtitle mb-0">{{ item.fullName }}</p>
+          <p class="caption pb-2 mb-0">{{ item.position }}</p>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>

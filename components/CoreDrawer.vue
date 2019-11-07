@@ -117,7 +117,7 @@ export default {
         },
 
         {
-          name: "Apoya a apuntus",
+          name: "Invitanos un...",
           to: "/sponsor",
           icon: "mdi-help-circle-outline",
           isExact: true

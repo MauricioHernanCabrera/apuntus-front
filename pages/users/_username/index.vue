@@ -6,12 +6,11 @@
           <v-tab
             v-for="item in tabs"
             :key="item.name"
-            :class="breakpoint.xs? 'caption' : 'subtitle-2'"
             :href="`#${item.value}`"
             @click="$router.push(`/users/${user.username}?noteName=${item.value}`)"
           >
             <v-icon :small="breakpoint.xs" class="mr-2">{{ item.icon }}</v-icon>
-            <span>{{ item.name }}</span>
+            <span :class="breakpoint.xs? 'caption' : 'subtitle-2'">{{ item.name }}</span>
           </v-tab>
         </v-tabs>
       </template>
