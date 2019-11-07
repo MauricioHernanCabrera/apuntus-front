@@ -150,6 +150,7 @@
 
               <client-only>
                 <file-pond
+                  class="pond"
                   ref="pond"
                   @updatefiles="handleUpdateFiles"
                   label-idle="Arrastra tus archivos o clickea para agregarlos"
@@ -444,3 +445,12 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.pond {
+  label {
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+</style>

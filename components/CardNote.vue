@@ -37,12 +37,12 @@
 
         <v-layout align-center row wrap mx-0>
           <v-flex>
-            <v-chip small :to="`/users/${note.owner.username}`">
+            <v-chip small :to="`/users/${note.owner.username}`" outlined>
               <v-icon small left class="hidden-xs-only">face</v-icon>
               {{ note.owner.username }}
             </v-chip>
 
-            <v-chip small color="accent" @click="$emit('filter', { codeNote: note.codeNote._id })">
+            <v-chip small @click="$emit('filter', { codeNote: note.codeNote._id })">
               <v-icon small left class="hidden-xs-only">mdi-note-text</v-icon>
               {{ note.codeNote.name }}
             </v-chip>

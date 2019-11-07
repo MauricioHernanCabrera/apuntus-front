@@ -7,7 +7,7 @@
         <v-alert
           type="warning"
           :class="[breakpoint.xs? 'subtitle-2' : 'subtitle-1', breakpoint.mdAndUp? 'mb-4' : 'mb-0']"
-        >Este apunte es nuevo, es probable que todavia no se haya terminado de subir todos los archivos. Esto puede demorarse de 15 a 30 minutos</v-alert>
+        >Se estan procesando los archivos de este apunte. Esto puede demorarse de 15 a 30 minutos</v-alert>
       </v-flex>
 
       <v-flex xs12>

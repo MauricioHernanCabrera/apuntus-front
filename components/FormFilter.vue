@@ -14,12 +14,11 @@
         <v-autocomplete
           v-model="form.institution"
           label="Institución"
-          autofocus
           placeholder="UNNE"
           :filter="(item, queryText) => filterAutocomplete(item, queryText, 'nameSort')"
           :items="institutions"
           :readonly="!!form.institution"
-          :append-icon="form.institution? 'mdi-close' : 'mdi-menu-down'"
+          :append-icon="form.institution? 'mdi-close' : ''"
           item-text="name"
           no-data-text="No hay institución para seleccionar"
           item-value="_id"
@@ -41,7 +40,7 @@
             placeholder="Algoritmo y Estructuras de Datos I"
             :items="subjects"
             :readonly="!!form.subject"
-            :append-icon="form.subject? 'mdi-close' : 'mdi-menu-down'"
+            :append-icon="form.subject? 'mdi-close' : ''"
             @click:append="form.subject = null"
           ></v-autocomplete>
         </v-expand-transition>
@@ -55,7 +54,7 @@
           item-value="_id"
           :items="codeNotes"
           :readonly="!!form.codeNote"
-          :append-icon="form.codeNote? 'mdi-close' : 'mdi-menu-down'"
+          :append-icon="form.codeNote? 'mdi-close' : ''"
           @click:append="form.codeNote = null"
         ></v-autocomplete>
 
@@ -68,7 +67,7 @@
           item-value="_id"
           :items="codeYears"
           :readonly="!!form.codeYear"
-          :append-icon="form.codeYear? 'mdi-close' : 'mdi-menu-down'"
+          :append-icon="form.codeYear? 'mdi-close' : ''"
           @click:append="form.codeYear = null"
         ></v-autocomplete>
       </v-flex>

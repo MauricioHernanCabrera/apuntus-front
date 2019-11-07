@@ -24,12 +24,6 @@
         <v-list-item-content>
           <v-list-item-title :class="[breakpoint.xs? 'caption' : 'body-2']" v-html="item.name"></v-list-item-title>
         </v-list-item-content>
-
-        <!-- <v-list-item-action v-if="!breakpoint.xs">
-          <v-btn text small color="grey lighten-1" depressed>
-            <span>abrir archivo</span>
-          </v-btn>
-        </v-list-item-action>-->
       </v-list-item>
     </v-list>
 

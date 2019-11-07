@@ -14,8 +14,9 @@
               <v-icon>close</v-icon>
             </v-btn>
 
-            <v-toolbar-title class="ml-0">{{ title }}</v-toolbar-title>
+            <v-toolbar-title class="ml-0" :class="{ 'subtitle-1': breakpoint.xs }">{{ title }}</v-toolbar-title>
           </v-toolbar>
+
           <v-card-title v-else>
             <span class="headline text-truncate">{{ title }}</span>
           </v-card-title>
@@ -27,11 +28,12 @@
           <v-footer v-if="fullscreen" height="56px" app>
             <v-container fill-height class="pa-0">
               <v-layout align-center>
-                <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
+                <v-btn text :small="breakpoint.xs" @click="$emit('cancel-form')">Cerrar</v-btn>
 
                 <v-spacer />
 
                 <v-btn
+                  :small="breakpoint.xs"
                   :disabled="disabled"
                   depressed
                   :loading="loading"
@@ -48,10 +50,18 @@
           </v-footer>
 
           <v-card-actions v-else>
-            <v-btn text @click="$emit('cancel-form')">Cerrar</v-btn>
+            <v-btn text :small="breakpoint.xs" @click="$emit('cancel-form')">Cerrar</v-btn>
+
             <v-spacer></v-spacer>
 
-            <v-btn :disabled="disabled" depressed type="submit" color="primary" :loading="loading">
+            <v-btn
+              :small="breakpoint.xs"
+              :disabled="disabled"
+              depressed
+              type="submit"
+              color="primary"
+              :loading="loading"
+            >
               {{ nameBtnSubmit }}
               <span slot="loader" class="custom-loader">
                 <v-icon light>cached</v-icon>
@@ -66,8 +76,9 @@
 
 <script>
 import basePropsForm from "@/mixins/basePropsForm";
+import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
 export default {
-  mixins: [basePropsForm],
+  mixins: [basePropsForm, hydratedVuetifyBreakpoints],
   props: {
     disabled: {
       type: Boolean,
