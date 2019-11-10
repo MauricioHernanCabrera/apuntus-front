@@ -28,7 +28,6 @@ const configMeta = ({ description = null, title = null, safeImg = {} }) => {
       content: `${title}`
     });
     metas.push({ hid: 'og-title', property: 'og:title', content: `${title}` });
-    metas.push();
   }
 
   if (alt) {
