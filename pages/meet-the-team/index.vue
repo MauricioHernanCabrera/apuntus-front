@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']" grid-list-lg>
+  <v-container :class="[breakpoint.mdAndUp ? 'pa-4' : 'pa-0']" grid-list-lg>
     <core-toolbar title="Conoce al equipo"></core-toolbar>
 
     <v-layout row wrap mx-0 justify-center align-center>
@@ -11,7 +11,12 @@
           style="text-decoration: none;"
         >
           <v-card-text class="d-flex justify-center">
-            <v-avatar width="164px" height="164px" class="elevation-12" style="overflow: hidden;">
+            <v-avatar
+              width="164px"
+              height="164px"
+              class="elevation-12"
+              style="overflow: hidden;"
+            >
               <v-img aspect-ratio="1" :src="item.photo" />
             </v-avatar>
           </v-card-text>
@@ -25,18 +30,18 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import CoreToolbar from "@/components/CoreToolbar";
-import { configMeta } from "@/helpers/seo";
-import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
+import { mapState, mapActions } from 'vuex';
+import CoreToolbar from '@/components/CoreToolbar';
+import { configMeta } from '@/helpers/seo';
+import hydratedVuetifyBreakpoints from '@/mixins/hydratedVuetifyBreakpoints';
 export default {
-  name: "Home",
+  name: 'Home',
   mixins: [hydratedVuetifyBreakpoints],
   components: { CoreToolbar },
 
   head() {
     const page = {
-      title: "Conoce al equipo - Apuntus"
+      title: 'Conoce al equipo - Apuntes'
     };
 
     return {
@@ -49,16 +54,16 @@ export default {
     return {
       members: [
         {
-          fullName: "Hernan Cabrera",
-          photo: "/images/hernan.jpg",
-          website: "https://mauriciohernancabrera.github.io",
-          position: "CEO"
+          fullName: 'Hernan Cabrera',
+          photo: '/images/hernan.jpg',
+          website: 'https://mauriciohernancabrera.github.io',
+          position: 'CEO'
         },
         {
-          fullName: "Esdras Pavon",
-          photo: "/images/esdras.jpg",
-          website: "https://esdraspavon.com",
-          position: "CTO"
+          fullName: 'Esdras Pavon',
+          photo: '/images/esdras.jpg',
+          website: 'https://esdraspavon.com',
+          position: 'CTO'
         }
       ]
     };
@@ -76,4 +81,3 @@ export default {
   width: 100%;
 }
 </style>
-

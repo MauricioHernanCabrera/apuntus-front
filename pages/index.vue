@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
+  <v-container :class="[breakpoint.mdAndUp ? 'pa-4' : 'pa-0']">
     <core-toolbar :title="`${data.total} apunte(s)`">
       <v-spacer></v-spacer>
 
@@ -28,12 +28,14 @@
 
       <v-btn
         icon
-        @click="setDialog({
-          title: 'Filtros',
-          data: filters,
-          nameBtnSubmit: 'Filtrar',
-          active: 'filter-notes'
-        })"
+        @click="
+          setDialog({
+            title: 'Filtros',
+            data: filters,
+            nameBtnSubmit: 'Filtrar',
+            active: 'filter-notes'
+          })
+        "
       >
         <v-icon>mdi-filter-outline</v-icon>
       </v-btn>
@@ -41,7 +43,12 @@
 
     <v-layout row wrap mx-0>
       <v-flex xs12>
-        <notes :notes="data.array" onlyLike :loading="loading" @filter="filterNotes" />
+        <notes
+          :notes="data.array"
+          onlyLike
+          :loading="loading"
+          @filter="filterNotes"
+        />
       </v-flex>
 
       <form-filter
@@ -58,16 +65,16 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import sendRequest from "@/mixins/sendRequest";
-import handleForm from "@/mixins/handleForm";
-import CoreToolbar from "@/components/CoreToolbar";
-import FormFilter from "@/components/FormFilter";
-import Notes from "@/components/Notes";
-import { configMeta } from "@/helpers/seo";
-import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
+import { mapState, mapActions } from 'vuex';
+import sendRequest from '@/mixins/sendRequest';
+import handleForm from '@/mixins/handleForm';
+import CoreToolbar from '@/components/CoreToolbar';
+import FormFilter from '@/components/FormFilter';
+import Notes from '@/components/Notes';
+import { configMeta } from '@/helpers/seo';
+import hydratedVuetifyBreakpoints from '@/mixins/hydratedVuetifyBreakpoints';
 export default {
-  name: "Home",
+  name: 'Home',
 
   mixins: [sendRequest, handleForm, hydratedVuetifyBreakpoints],
 
@@ -75,7 +82,7 @@ export default {
 
   head() {
     const page = {
-      title: "Inicio - Apuntus"
+      title: 'Inicio - Apuntes'
     };
 
     return {
@@ -92,7 +99,7 @@ export default {
     let filters = {};
 
     try {
-      const resNotes = await store.dispatch("notes/getAll", {
+      const resNotes = await store.dispatch('notes/getAll', {
         queryParams: { page: 0 }
       });
       data = resNotes.data;
@@ -100,7 +107,7 @@ export default {
       const { nextPage = null } = data;
       filters.page = nextPage;
     } catch (error) {
-      store.dispatch("notification/handleError", error);
+      store.dispatch('notification/handleError', error);
     } finally {
       return {
         data,
@@ -119,14 +126,14 @@ export default {
   },
 
   computed: {
-    ...mapState(["position"])
+    ...mapState(['position'])
   },
 
   methods: {
-    ...mapActions("notes", ["getAll"]),
+    ...mapActions('notes', ['getAll']),
 
     filterNotes(filters) {
-      this.filters = { ...this.filters, ...filters, page: 0, search: "" };
+      this.filters = { ...this.filters, ...filters, page: 0, search: '' };
 
       this.sendRequest(async () => {
         const { data, message } = await this.getAll({
@@ -155,7 +162,7 @@ export default {
   },
 
   watch: {
-    async "position.y"(newValue) {
+    async 'position.y'(newValue) {
       if (!this.filters.page) return;
       const fullHeight = newValue + this.breakpoint.height * 2;
 
@@ -177,4 +184,3 @@ export default {
   }
 };
 </script>
-

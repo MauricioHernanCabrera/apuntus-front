@@ -2,7 +2,7 @@
   <!-- <v-card>
       <v-card-text>
         <p class="font-weight-light mb-0" :class="[breakpoint.xs? 'body-2' : 'body-1']">
-          Apuntus es un proyecto web de libre uso. Es y siempre será de uso gratuito.
+          Apuntes es un proyecto web de libre uso. Es y siempre será de uso gratuito.
           Las contribuciones de donantes, patrocinadores, y patrocinadores
           especiales permiten el desarrollo de nuevas funcionalidades.
           Podes apoyar el proyecto convirtiendote en un patrocinador
@@ -54,7 +54,7 @@ export default {
 
   head() {
     const page = {
-      title: "Apoya a Apuntus"
+      title: "Apoya a Apuntes"
     };
 
     return {

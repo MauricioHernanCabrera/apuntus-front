@@ -1,6 +1,10 @@
 <template>
   <card-auth
-    :title="user? 'Recupera tu contraseña' : 'El token para recuperar tu contraseña expiro'"
+    :title="
+      user
+        ? 'Recupera tu contraseña'
+        : 'El token para recuperar tu contraseña expiro'
+    "
     @submit="sendRequest(postResetPasswordAndReport)"
   >
     <template v-if="user">
@@ -42,28 +46,25 @@
     </template>
 
     <template slot="actions">
-      <v-btn
-        to="/auth/reset"
-        color="primary"
-        block
-        :small="breakpoint.xs"
-      >volver a recuperar mi contraseña</v-btn>
+      <v-btn to="/auth/reset" color="primary" block :small="breakpoint.xs"
+        >volver a recuperar mi contraseña</v-btn
+      >
     </template>
   </card-auth>
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
-import sendRequest from "@/mixins/sendRequest";
-import { configMeta } from "@/helpers/seo";
-import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
-import CardAuth from "@/components/CardAuth";
+import { required } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
+import sendRequest from '@/mixins/sendRequest';
+import { configMeta } from '@/helpers/seo';
+import hydratedVuetifyBreakpoints from '@/mixins/hydratedVuetifyBreakpoints';
+import CardAuth from '@/components/CardAuth';
 
 export default {
   mixins: [sendRequest, hydratedVuetifyBreakpoints],
-  middleware: "isAuth",
-  layout: "auth",
+  middleware: 'isAuth',
+  layout: 'auth',
   components: { CardAuth },
   validations: {
     form: {
@@ -75,14 +76,14 @@ export default {
     let user = null;
 
     try {
-      const res = await store.dispatch("auth/getResetPassword", {
+      const res = await store.dispatch('auth/getResetPassword', {
         queryParams: {
           _id: params.id
         }
       });
       user = res.data;
     } catch (error) {
-      store.dispatch("notification/handleError", error);
+      store.dispatch('notification/handleError', error);
     } finally {
       return {
         user
@@ -92,8 +93,8 @@ export default {
 
   head() {
     const page = {
-      title: "Reinicia tu contraseña de Apuntus",
-      description: "Reinicia tu contraseña con tu email en Apuntus"
+      title: 'Reinicia tu contraseña de Apuntes',
+      description: 'Reinicia tu contraseña con tu email en Apuntes'
     };
 
     return {
@@ -105,14 +106,14 @@ export default {
   data() {
     return {
       form: {
-        password: ""
+        password: ''
       },
       showPassword: false
     };
   },
 
   methods: {
-    ...mapActions("auth", ["postResetPassword"]),
+    ...mapActions('auth', ['postResetPassword']),
 
     postResetPasswordAndReport() {
       this.showPassword = false;
@@ -130,5 +131,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

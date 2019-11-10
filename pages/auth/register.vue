@@ -1,5 +1,8 @@
 <template>
-  <card-auth title="Registrate con tu email" @submit="sendRequest(registerAndReport)">
+  <card-auth
+    title="Registrate con tu email"
+    @submit="sendRequest(registerAndReport)"
+  >
     <v-text-field
       v-model="form.username"
       prepend-icon="mdi-face"
@@ -49,17 +52,17 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
-import sendRequest from "@/mixins/sendRequest";
-import { configMeta } from "@/helpers/seo";
-import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
-import CardAuth from "@/components/CardAuth";
+import { required } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
+import sendRequest from '@/mixins/sendRequest';
+import { configMeta } from '@/helpers/seo';
+import hydratedVuetifyBreakpoints from '@/mixins/hydratedVuetifyBreakpoints';
+import CardAuth from '@/components/CardAuth';
 
 export default {
   mixins: [sendRequest, hydratedVuetifyBreakpoints],
-  middleware: "isAuth",
-  layout: "auth",
+  middleware: 'isAuth',
+  layout: 'auth',
   components: { CardAuth },
   validations: {
     form: {
@@ -70,8 +73,8 @@ export default {
 
   head() {
     const page = {
-      title: "Registrate en Apuntus",
-      description: "Registrate con tu email en Apuntus"
+      title: 'Registrate en Apuntes',
+      description: 'Registrate con tu email en Apuntes'
     };
 
     return {
@@ -83,16 +86,16 @@ export default {
   data() {
     return {
       form: {
-        email: "",
-        password: "",
-        username: ""
+        email: '',
+        password: '',
+        username: ''
       },
       showPassword: false
     };
   },
 
   methods: {
-    ...mapActions("auth", ["register"]),
+    ...mapActions('auth', ['register']),
 
     registerAndReport() {
       this.showPassword = false;
@@ -102,5 +105,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

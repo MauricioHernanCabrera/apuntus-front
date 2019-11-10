@@ -46,8 +46,8 @@ export default {
   head() {
     const { username } = this.user;
     const page = {
-      title: `${username} - Apuntus`,
-      description: `Mira los apuntes creados, guardados y favoritos de ${username} en Apuntus`
+      title: `${username} - Apuntes`,
+      description: `Mira los apuntes creados, guardados y favoritos de ${username} en Apuntes`
     };
 
     return {

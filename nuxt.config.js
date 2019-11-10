@@ -13,13 +13,13 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const page = {
-  title: 'Apuntus',
-  short_name: 'Apuntus',
+  title: 'Apuntes',
+  short_name: 'Apuntes',
   description: 'Encontra los mejores apuntes compartido por estudiantes',
-  siteName: 'Apuntus',
+  siteName: 'Apuntes',
   safeImg: {
     url: `${FRONT_URL}/images/safe_image.png`,
-    alt: 'Image of Apuntus'
+    alt: 'Image of Apuntes'
   },
   favicon: `${FRONT_URL}/images/apuntus-original.ico`
 };

@@ -263,8 +263,8 @@ export default {
 
   head() {
     const page = {
-      title: `Nuevo apunte - Apuntus`,
-      description: "Crea un apunte en Apuntus"
+      title: `Nuevo apunte - Apuntes`,
+      description: "Crea un apunte en Apuntes"
     };
 
     return {

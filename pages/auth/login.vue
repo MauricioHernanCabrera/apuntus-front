@@ -1,5 +1,8 @@
 <template>
-  <card-auth title="Inicia sesión con tu usuario" @submit="sendRequest(loginAndReport)">
+  <card-auth
+    title="Inicia sesión con tu usuario"
+    @submit="sendRequest(loginAndReport)"
+  >
     <v-text-field
       v-model="form.username"
       prepend-icon="mdi-face"
@@ -26,7 +29,8 @@
         small
         class="subtitle-1 text-lowercase"
         to="/auth/reset"
-      >¿Olvidaste tu contraseña?</v-btn>
+        >¿Olvidaste tu contraseña?</v-btn
+      >
     </v-layout>
 
     <template slot="actions">
@@ -52,17 +56,17 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
-import sendRequest from "@/mixins/sendRequest";
-import CardAuth from "@/components/CardAuth";
-import { configMeta } from "@/helpers/seo";
-import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
+import { required } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
+import sendRequest from '@/mixins/sendRequest';
+import CardAuth from '@/components/CardAuth';
+import { configMeta } from '@/helpers/seo';
+import hydratedVuetifyBreakpoints from '@/mixins/hydratedVuetifyBreakpoints';
 
 export default {
   mixins: [sendRequest, hydratedVuetifyBreakpoints],
-  middleware: "isAuth",
-  layout: "auth",
+  middleware: 'isAuth',
+  layout: 'auth',
   components: {
     CardAuth
   },
@@ -76,8 +80,8 @@ export default {
 
   head() {
     const page = {
-      title: "Inicia sesión en Apuntus",
-      description: "Inicia sesión con tu email en Apuntus"
+      title: 'Inicia sesión en Apuntes',
+      description: 'Inicia sesión con tu email en Apuntes'
     };
 
     return {
@@ -89,15 +93,15 @@ export default {
   data() {
     return {
       form: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       },
       showPassword: false
     };
   },
 
   methods: {
-    ...mapActions("auth", ["login"]),
+    ...mapActions('auth', ['login']),
 
     loginAndReport() {
       this.showPassword = false;
@@ -107,5 +111,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -1,5 +1,8 @@
 <template>
-  <card-auth title="Recupera acceso a tu cuenta" @submit="sendRequest(forgotAndReport)">
+  <card-auth
+    title="Recupera acceso a tu cuenta"
+    @submit="sendRequest(forgotAndReport)"
+  >
     <v-text-field
       v-model="form.email"
       prepend-icon="mdi-email-outline"
@@ -30,17 +33,17 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
-import sendRequest from "@/mixins/sendRequest";
-import { configMeta } from "@/helpers/seo";
-import hydratedVuetifyBreakpoints from "@/mixins/hydratedVuetifyBreakpoints";
-import CardAuth from "@/components/CardAuth";
+import { required } from 'vuelidate/lib/validators';
+import { mapActions } from 'vuex';
+import sendRequest from '@/mixins/sendRequest';
+import { configMeta } from '@/helpers/seo';
+import hydratedVuetifyBreakpoints from '@/mixins/hydratedVuetifyBreakpoints';
+import CardAuth from '@/components/CardAuth';
 
 export default {
   mixins: [sendRequest, hydratedVuetifyBreakpoints],
-  middleware: "isAuth",
-  layout: "auth",
+  middleware: 'isAuth',
+  layout: 'auth',
   components: { CardAuth },
   validations: {
     form: {
@@ -50,8 +53,8 @@ export default {
 
   head() {
     const page = {
-      title: "Recupera tu contraseña de Apuntus",
-      description: "Recupera tu contraseña con tu email en Apuntus"
+      title: 'Recupera tu contraseña de Apuntes',
+      description: 'Recupera tu contraseña con tu email en Apuntes'
     };
 
     return {
@@ -63,13 +66,13 @@ export default {
   data() {
     return {
       form: {
-        email: ""
+        email: ''
       }
     };
   },
 
   methods: {
-    ...mapActions("auth", ["forgot"]),
+    ...mapActions('auth', ['forgot']),
 
     forgotAndReport() {
       return this.forgot({ body: this.form });
@@ -78,5 +81,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

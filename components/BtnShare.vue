@@ -62,7 +62,7 @@ export default {
   methods: {
     async shareTable() {
       const shared = await navigator.share({
-        title: "Apuntus",
+        title: "Apuntes",
         text: "",
         url: `${this.url}`
       });
