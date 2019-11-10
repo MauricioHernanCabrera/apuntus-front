@@ -2,7 +2,7 @@
   <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
     <core-toolbar :title="isMyProfile? 'Mi perfil' : `Perfil de ${user.username}`">
       <template v-slot:extension-2>
-        <v-tabs v-model="tabSelected" centered slider-color="yellow" background-color="transparent">
+        <v-tabs :value="tabSelected" centered slider-color="yellow" background-color="transparent">
           <v-tab
             v-for="item in tabs"
             :key="item.name"
@@ -18,7 +18,7 @@
 
     <v-layout row wrap mx-0>
       <v-flex xs12>
-        <v-tabs-items v-model="tabSelected">
+        <v-tabs-items :value="tabSelected">
           <v-tab-item v-for="item in tabs" :key="item.name" :value="`${item.value}`">
             <notes :notes="data.array" :loading="loading" :toolbarActionsActive="false" />
           </v-tab-item>
@@ -87,11 +87,14 @@ export default {
       store.dispatch("notification/handleError", error);
       redirect("/");
     } finally {
+      const { noteName = null } = query;
+      const tabSelected = query.noteName || "created";
+
       return {
         user,
         data,
         filters,
-        tabSelected: query.noteName,
+        tabSelected,
         isMyProfile
       };
     }

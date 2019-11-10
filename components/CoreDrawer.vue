@@ -94,7 +94,7 @@ export default {
     return {
       routesBase: [
         {
-          name: "Inicio",
+          name: "Apuntes",
           to: "/",
           icon: "mdi-home-outline",
           isExact: true

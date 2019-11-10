@@ -98,26 +98,36 @@ export default {
   },
 
   async mounted() {
-    const resInstitutions = await this["institutions/getAll"]();
-    const resCodeYears = await this["codeYears/getAll"]();
-    const resCodeNotes = await this["codeNotes/getAll"]();
+    try {
+      const [resInstitutions, resCodeYears, resCodeNotes] = await Promise.all([
+        this["institutions/getAll"](),
+        this["codeYears/getAll"](),
+        this["codeNotes/getAll"]()
+      ]);
 
-    this.institutions = resInstitutions.data;
-    this.codeNotes = resCodeNotes.data;
-    this.codeYears = resCodeYears.data;
+      this.institutions = resInstitutions.data;
+      this.codeNotes = resCodeNotes.data;
+      this.codeYears = resCodeYears.data;
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   watch: {
     async "form.institution"(newValue) {
-      if (!newValue) return;
+      try {
+        if (!newValue) return;
 
-      const resSubjects = await this["institutions/getSubjects"]({
-        queryParams: {
-          _id: newValue
-        }
-      });
+        const resSubjects = await this["institutions/getSubjects"]({
+          queryParams: {
+            _id: newValue
+          }
+        });
 
-      this.subjects = resSubjects.data;
+        this.subjects = resSubjects.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 

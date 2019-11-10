@@ -12,7 +12,7 @@
       <v-divider class="my-2"></v-divider>
   </v-card>-->
 
-  <v-container grid-list-lg class="pa-0">
+  <v-container grid-list-lg :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']">
     <core-toolbar title="Invitanos un..."></core-toolbar>
 
     <v-layout wrap>

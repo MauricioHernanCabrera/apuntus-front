@@ -1,6 +1,24 @@
 <template>
   <v-container :class="[breakpoint.mdAndUp? 'pa-4' : 'pa-0']" v-if="Object.keys(note).length > 0">
-    <core-toolbar :title="`Apunte de ${note && note.owner? note.owner.username : ''}`"></core-toolbar>
+    <core-toolbar :title="`Apunte de ${note && note.owner? note.owner.username : ''}`">
+      <v-spacer></v-spacer>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on }">
+          <v-btn dark icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item @click="deleteNote">
+            <v-list-item-title>Borrar apunte</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- <v-btn icon>isMeNote
+        <v-icon></v-icon>
+      </v-btn>-->
+    </core-toolbar>
 
     <v-layout row wrap mx-0>
       <v-flex xs12 v-if="isNewNote">
@@ -36,9 +54,7 @@ moment.locale("es");
 
 export default {
   mixins: [sendRequest, handleForm, hydratedVuetifyBreakpoints],
-
   components: { CardFiles, CoreToolbar, CardNote },
-
   head() {
     const page = {
       title: `${this.note.title} - Apuntus`,
@@ -54,7 +70,6 @@ export default {
   async asyncData({ store, params: { id: _id }, redirect }) {
     let note = {};
     let files = [];
-
     let filters = {
       pageSize: 32
     };
@@ -85,19 +100,37 @@ export default {
 
   computed: {
     ...mapState(["position"]),
+    ...mapState("user", ["user"]),
 
     isNewNote() {
       const createdAt = moment(new Date(this.note.createdAt)).add(
-        30,
+        15,
         "minutes"
       );
       const current = moment(new Date());
       return createdAt.isAfter(current);
+    },
+
+    isMeNote() {
+      const { _id: userId = 0 } = this.user;
+      const { _id: ownerId = 1 } = this.note.owner;
+      return userId === ownerId;
     }
   },
 
   methods: {
-    ...mapActions(["notes/files/getAll"])
+    ...mapActions("notes", ["deleteOne"]),
+    deleteNote() {
+      this.sendRequest(async () => {
+        const res = await this.deleteOne({
+          pathParams: { _id: this.note._id }
+        });
+
+        this.$router.push("/");
+
+        return res;
+      });
+    }
   }
 };
 </script>

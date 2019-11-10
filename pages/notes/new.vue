@@ -49,7 +49,7 @@
                   form.subject = null
                 }"
               >
-                <v-card
+                <!-- <v-card
                   slot="append-item"
                   color="primary"
                   style="cursor: pointer;"
@@ -67,7 +67,7 @@
                     <span class="d-inline-block">¿No encontraste tu institución?</span>
                     <span class="py-1 d-inline-block white--text">¡Click aca para agregarla!</span>
                   </v-card-text>
-                </v-card>
+                </v-card> -->
               </v-autocomplete>
             </v-flex>
 
@@ -89,7 +89,7 @@
                     form.subject = null
                   }"
                 >
-                  <v-card
+                  <!-- <v-card
                     slot="append-item"
                     color="primary"
                     style="cursor: pointer;"
@@ -107,7 +107,7 @@
                       <span class="d-inline-block">¿No encontraste tu materia?</span>
                       <span class="py-1 d-inline-block white--text">¡Click aca para agregarla!</span>
                     </v-card-text>
-                  </v-card>
+                  </v-card> -->
                 </v-autocomplete>
               </v-flex>
             </v-expand-transition>
@@ -187,7 +187,7 @@
       </v-flex>
     </v-layout>
 
-    <form-institution
+    <!-- <form-institution
       :data="dialog.data"
       :active="dialog.active == 'create-institution'"
       :title="dialog.title"
@@ -205,7 +205,7 @@
       :nameBtnSubmit="dialog.nameBtnSubmit"
       @cancel-form="cancelDialog"
       @submit-form="createSubject"
-    />
+    /> -->
 
     <!-- style="z-index: 100;" -->
     <v-dialog v-if="countFilesUploaded >= 0" :value="true" persistent width="300">
