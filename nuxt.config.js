@@ -4,13 +4,13 @@ const colors = require('vuetify/es5/util/colors');
 let API_URL = '';
 let FRONT_URL = '';
 
-if (process.env.NODE_ENV === 'production') {
-  API_URL = 'https://api.apuntes.baultix.com';
-  FRONT_URL = 'https://apuntes.baultix.com';
-} else {
-  API_URL = 'http://127.0.0.1:8000';
-  FRONT_URL = 'http://localhost:3000';
-}
+// if (process.env.NODE_ENV === 'production') {
+API_URL = 'https://api.apuntes.baultix.com';
+FRONT_URL = 'https://apuntes.baultix.com';
+// } else {
+//   API_URL = 'http://127.0.0.1:8000';
+//   FRONT_URL = 'http://localhost:3000';
+// }
 
 const page = {
   title: 'Apuntes',
@@ -42,54 +42,31 @@ module.exports = {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1,  user-scalable=no'
       },
-      { hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
-      {
-        hid: 'og-site_name',
-        property: 'og:site_name',
-        content: `${page.siteName}`
-      },
-      { hid: 'og-type', property: 'og:type', content: 'website' },
 
-      {
-        hid: 'description',
-        name: 'description',
-        content: `${page.description}`
-      },
-      {
-        hid: 'og-description',
-        property: 'og:description',
-        content: `${page.description}`
-      },
-      {
-        hid: 'twitter-title',
-        name: 'twitter:title',
-        content: `${page.title}`
-      },
+      { hid: 'description', name: 'description', content: `${page.description}` },
+
+      { hid: 'og-type', property: 'og:type', content: 'website' },
       { hid: 'og-title', property: 'og:title', content: `${page.title}` },
-      {
-        hid: 'twitter-image-alt',
-        name: 'twitter:image:alt',
-        content: `${page.safeImg.alt}`
-      },
-      {
-        hid: 'twitter-image',
-        name: 'twitter:image',
-        content: `${page.safeImg.url}`
-      },
-      { hid: 'og-image', property: 'og:image', content: `${page.safeImg.url}` }
+      { hid: 'og-url', property: 'og:url', content: `${FRONT_URL}` },
+      { hid: 'og-image', property: 'og:image', content: `${page.safeImg.url}` },
+      { hid: 'og-site_name', property: 'og:site_name', content: `${page.siteName}` },
+      { hid: 'og-description', property: 'og:description', content: `${page.description}` },
+
+      { hid: 'twitter-card', name: 'twitter:card', content: 'summary' },
+      { hid: 'twitter-title', name: 'twitter:title', content: `${page.title}` },
+      { hid: 'twitter-image', name: 'twitter:image', content: `${page.safeImg.url}` },
+      { hid: 'twitter-image-alt', name: 'twitter:image:alt', content: `${page.safeImg.alt}` }
     ],
 
     link: [
       { rel: 'icon', type: 'image/x-icon', href: page.favicon },
       {
         rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+        href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
       },
       {
         rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css'
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css'
       }
     ]
 
