@@ -4,13 +4,13 @@ const colors = require('vuetify/es5/util/colors');
 let API_URL = '';
 let FRONT_URL = '';
 
-// if (process.env.NODE_ENV === 'production') {
-API_URL = 'https://api.apuntes.baultix.com';
-FRONT_URL = 'https://apuntes.baultix.com';
-// } else {
-//   API_URL = 'http://127.0.0.1:8000';
-//   FRONT_URL = 'http://localhost:3000';
-// }
+if (process.env.NODE_ENV === 'production') {
+  API_URL = 'https://api.apuntes.baultix.com';
+  FRONT_URL = 'https://apuntes.baultix.com';
+} else {
+  API_URL = 'http://127.0.0.1:8000';
+  FRONT_URL = 'http://localhost:3000';
+}
 
 const page = {
   title: 'Apuntes',
